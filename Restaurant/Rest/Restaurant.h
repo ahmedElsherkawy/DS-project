@@ -16,8 +16,15 @@ class Restaurant
 private:
 	GUI *pGUI;
 	Queue<Event*> EventsQueue;	//Queue of all events that will be loaded from file
+	Queue<Order *> WaitingVegan;
+	Queue<Cook *> freeNormalCooks;
+	Queue<Cook *> freeVegancooks;
+	Queue<Cook *> freeVIPCooks;
+	Queue<Order*> finishedOrders;
 
+	//lists of VIP orders ,normal orders,inservive orders,busy cooks
 	
+
 	/// ==> 
 	//	DEMO-related members. Should be removed in phases 1&2
 	Queue<Order*> DEMO_Queue;	//Important: This is just for demo
@@ -25,6 +32,7 @@ private:
 	
 	
 	
+
 	//
 	// TODO: Add More Data Members As Needed
 	//
@@ -45,8 +53,9 @@ public:
 	//
 	// TODO: Add More Member Functions As Needed
 	//
-
-
+	void addToEventQueue(Event* E);
+	void LoadingFunc(char * address);
+	void SimulationFunc_INTR();
 /// ===================    DEMO-related functions. Should be removed in phases 1&2   ================= 
 
 	void Just_A_Demo();	//just to show a demo and should be removed in phase1 1 & 2

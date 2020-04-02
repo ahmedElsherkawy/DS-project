@@ -2,7 +2,13 @@
 #include "..\Rest\Restaurant.h"
 
 
-ArrivalEvent::ArrivalEvent(int eTime, int oID, ORD_TYPE oType):Event(eTime, oID)
+ArrivalEvent::ArrivalEvent(int eTime, int oID, ORD_TYPE oType,int s,double m):Event(eTime, oID)
+{
+	OrdType = oType;
+	size = s;
+	OrdMoney = m;
+}
+ArrivalEvent::ArrivalEvent(int eTime, int oID, ORD_TYPE oType) :Event(eTime, oID)
 {
 	OrdType = oType;
 }

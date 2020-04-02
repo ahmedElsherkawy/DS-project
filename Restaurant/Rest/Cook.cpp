@@ -10,6 +10,14 @@ Cook::~Cook()
 {
 }
 
+Cook::Cook(int id, ORD_TYPE t, int s,int c, int b) {
+	ID = id;
+	type = t;
+	speed = s;
+	capacity = c;
+	breaktime = b;
+}
+
 
 int Cook::GetID() const
 {

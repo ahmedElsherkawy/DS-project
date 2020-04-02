@@ -2,7 +2,9 @@
 #include <time.h>
 #include <iostream>
 using namespace std;
-
+#include<fstream>
+#include"../CancellationEvent.h"
+#include"../PromotionEvent.h"
 #include "Restaurant.h"
 #include "..\Events\ArrivalEvent.h"
 
@@ -20,7 +22,8 @@ void Restaurant::RunSimulation()
 	switch (mode)	//Add a function for each mode in next phases
 	{
 	case MODE_INTR:
-		break;
+		SimulationFunc_INTR();
+		break; //mode to use
 	case MODE_STEP:
 		break;
 	case MODE_SLNT:
@@ -58,9 +61,32 @@ Restaurant::~Restaurant()
 		if (pGUI)
 			delete pGUI;
 }
+void Restaurant::SimulationFunc_INTR() {
 
+	//get file name
+	//call loading function 
+	//make time var   int timestep=1;
+	//logic
+	//call filldrawinglist
+	//call updateinterface
+}
 void Restaurant::FillDrawingList()
 {
+	// function to use -->>  pGUI->AddToDrawingList()
+	
+	//example for queues
+	/*
+	Order** Demo_Orders_Array = DEMO_Queue.toArray(size);
+
+	for (int i = 0; i < size; i++)
+	{
+		pOrd = Demo_Orders_Array[i];
+		pGUI->AddToDrawingList(pOrd);
+	}
+	
+	*/
+
+
 	//This function should be implemented in phase1
 	//It should add ALL orders and Cooks to the drawing list
 	//It should get orders from orders lists/queues/stacks/whatever (same for Cooks)
@@ -68,8 +94,65 @@ void Restaurant::FillDrawingList()
 	//To add Cooks it should call function  void GUI::AddToDrawingList(Cook* pCc);
 
 }
-
-
+/// done by ola
+void Restaurant::addToEventQueue(Event* E) {
+	EventsQueue.enqueue(E);
+}
+///done by ola
+void Restaurant::LoadingFunc(char * address) {
+	fstream input_file;
+	input_file.open(address);
+	int cookN, cookG, cookV, sn, sg, sv, BO, BN, BG, BV, pro;
+	input_file >> cookN >> cookG >> cookV >> sn >> sg >> sv >> BO >> BN >> BG >> BV >> pro;
+	//cout << cookN << cookG << cookV << sn << sg << sv << BO << BN << BG << BV;
+	Cook * NC;
+	Queue<Cook > Ncooks;
+	for (int i = 0; i < cookN; i++) {
+		NC = new Cook(i, TYPE_NRM, sn, BO, BN);
+		//Ncooks.enqueue(Cook(i, TYPE_NRM, sn, BO, BN));
+	}
+	Queue<Cook >Gcooks;
+	for (int i = cookN; i < cookN + cookG; i++) {
+		NC = new Cook(i, TYPE_VGAN, sg, BO, BG);
+		//Ncooks.enqueue(Cook(i, TYPE_VGAN, sg, BO, BG));
+	}
+	Queue <Cook > Vcooks;
+	for (int i = cookG; i < cookN + cookG + cookV; i++) {
+		NC = new Cook(i, TYPE_VIP, sv, BO, BV);
+		//Ncooks.enqueue(Cook(i, TYPE_VIP, sv, BO, BV));
+	}
+	
+	int nevents;
+	char eventtype, ordtype;
+	int t, id, s;
+	double m;
+	input_file >> nevents;
+	for (int i = 0; i < nevents; i++) {
+		Event * ER;
+		input_file >> eventtype;
+		//cout << eventtype;
+		if (eventtype == 'R') {
+			input_file >> ordtype >> t >> id >> s >> m;
+			if (ordtype == 'N')
+				ER = new ArrivalEvent(t, id, TYPE_NRM, s, m);
+			else if (ordtype == 'G')
+				ER = new ArrivalEvent(t, id, TYPE_VGAN, s, m);
+			else if (ordtype == 'V')
+				ER = new ArrivalEvent(t, id, TYPE_VIP, s, m);
+			EventsQueue.enqueue(ER);
+		}
+		else if (eventtype == 'X') {
+			input_file >> t>> id;
+			ER = new CancellationEvent(t, id);
+			EventsQueue.enqueue(ER);
+		}
+		else if (eventtype == 'P') {
+			input_file >> t>> id>> m;
+			ER = new PromotionEvent(t, id, m);
+			EventsQueue.enqueue(ER);
+		}
+	}
+}
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////
