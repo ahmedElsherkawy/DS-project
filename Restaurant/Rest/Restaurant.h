@@ -5,6 +5,7 @@
 #include "..\CMUgraphicsLib\CMUgraphics.h"
 #include "..\GUI\GUI.h"
 #include "..\Generic_DS\Queue.h"
+#include "..\Generic_DS\LinkedList.h"
 #include "..\Events\Event.h"
 
 
@@ -21,6 +22,11 @@ private:
 	Queue<Cook *> freeVegancooks;
 	Queue<Cook *> freeVIPCooks;
 	Queue<Order*> finishedOrders;
+	LinkedList<Cook*> busyCooks;
+	LinkedList<Cook*> inBreakCooks;
+	LinkedList<Order*> WaitingNormal;
+	LinkedList<Order*> WaitingVIP;
+	LinkedList <Order*> inServiceOrders;
 
 	//lists of VIP orders ,normal orders,inservive orders,busy cooks
 	
