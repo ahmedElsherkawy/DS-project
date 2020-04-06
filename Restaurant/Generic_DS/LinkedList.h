@@ -616,6 +616,7 @@ void InsertEnd( Order* ordp,int key) {
 
 
 
+<<<<<<< HEAD
 	Order* getFirst()
 	{
 		Node<Order*>* p = Head;
@@ -628,5 +629,7 @@ void InsertEnd( Order* ordp,int key) {
 
 
 
+=======
+>>>>>>> 78e068d24fc2ce708ab4c8efe53ea52db8a911f9
 
 };

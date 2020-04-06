@@ -1,4 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
+=======
+<<<<<<< HEAD
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+=======
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ShowAllFiles>true</ShowAllFiles>
+  </PropertyGroup>
+>>>>>>> afc05bc855b6ab79b48fc22ddf77361aba5e96ba
+>>>>>>> 78e068d24fc2ce708ab4c8efe53ea52db8a911f9
 </Project>

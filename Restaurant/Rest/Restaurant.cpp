@@ -3,6 +3,7 @@
 #include <iostream>
 using namespace std;
 #include<fstream>
+<<<<<<< HEAD
 //<<<<<<< HEAD 
 #include"..\Events\CancellationEvent.h"
 #include"..\Events\PromotionEvent.h"
@@ -10,6 +11,15 @@ using namespace std;
 #include"..\Events\PromotionEvent.h"
 #include"..\Events\CancellationEvent.h"
 //>>>>>>> afc05bc855b6ab79b48fc22ddf77361aba5e96ba
+=======
+<<<<<<< HEAD
+#include"..\Events\CancellationEvent.h"
+#include"..\Events\PromotionEvent.h"
+=======
+#include"..\Events\PromotionEvent.h"
+#include"..\Events\CancellationEvent.h"
+>>>>>>> afc05bc855b6ab79b48fc22ddf77361aba5e96ba
+>>>>>>> 78e068d24fc2ce708ab4c8efe53ea52db8a911f9
 #include "Restaurant.h"
 #include "..\Events\ArrivalEvent.h"
 
