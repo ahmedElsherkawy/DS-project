@@ -1,0 +1,49 @@
+﻿  Restaurant.cpp
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(6,1): error C2059: syntax error: '<<'
+D:\universty\DS-project\DS-project\Restaurant\Defs.h(9,1): error C2143: syntax error: missing ';' before '{'
+D:\universty\DS-project\DS-project\Restaurant\Defs.h(9,1): error C2447: '{': missing function header (old-style formal list?)
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(9,1): error C2059: syntax error: '=='
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.25.28610\include\cctype(37,1): error C2143: syntax error: missing ';' before '{'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.25.28610\include\cctype(37,1): error C2447: '{': missing function header (old-style formal list?)
+D:\universty\DS-project\DS-project\Restaurant\Rest\Cook.h(9,15): error C3646: 'type': unknown override specifier
+D:\universty\DS-project\DS-project\Restaurant\Rest\Cook.h(9,15): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+D:\universty\DS-project\DS-project\Restaurant\Rest\Cook.h(18,36): error C2061: syntax error: identifier 'ORD_TYPE'
+D:\universty\DS-project\DS-project\Restaurant\Rest\Cook.h(21,18): error C3646: 'GetType': unknown override specifier
+D:\universty\DS-project\DS-project\Restaurant\Rest\Cook.h(21,18): error C2059: syntax error: '('
+D:\universty\DS-project\DS-project\Restaurant\Rest\Cook.h(21,26): error C2238: unexpected token(s) preceding ';'
+D:\universty\DS-project\DS-project\Restaurant\Rest\Cook.h(23,23): error C2061: syntax error: identifier 'ORD_TYPE'
+D:\universty\DS-project\DS-project\Restaurant\Rest\Order.h(11,15): error C3646: 'type': unknown override specifier
+D:\universty\DS-project\DS-project\Restaurant\Rest\Order.h(11,15): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+D:\universty\DS-project\DS-project\Restaurant\Rest\Order.h(26,32): error C2061: syntax error: identifier 'ORD_TYPE'
+D:\universty\DS-project\DS-project\Restaurant\Rest\Order.h(31,18): error C3646: 'GetType': unknown override specifier
+D:\universty\DS-project\DS-project\Restaurant\Rest\Order.h(31,18): error C2059: syntax error: '('
+D:\universty\DS-project\DS-project\Restaurant\Rest\Order.h(31,26): error C2238: unexpected token(s) preceding ';'
+D:\universty\DS-project\DS-project\Restaurant\GUI\GUI.h(36,22): error C2065: 'TYPE_CNT': undeclared identifier
+D:\universty\DS-project\DS-project\Restaurant\Events\ArrivalEvent.h(12,18): error C3646: 'OrdType': unknown override specifier
+D:\universty\DS-project\DS-project\Restaurant\Events\ArrivalEvent.h(12,18): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+D:\universty\DS-project\DS-project\Restaurant\Events\ArrivalEvent.h(18,50): error C2061: syntax error: identifier 'ORD_TYPE'
+D:\universty\DS-project\DS-project\Restaurant\Events\ArrivalEvent.h(20,67): error C2061: syntax error: identifier 'ORD_TYPE'
+D:\universty\DS-project\DS-project\Restaurant\Events\ArrivalEvent.h(20,67): error C2535: 'ArrivalEvent::ArrivalEvent(int,int)': member function already defined or declared
+D:\universty\DS-project\DS-project\Restaurant\Events\ArrivalEvent.h(18): message : see declaration of 'ArrivalEvent::ArrivalEvent'
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(96,31): error C2660: 'LinkedList<Order*>::InsertEnd': function does not take 1 arguments
+D:\universty\DS-project\DS-project\Restaurant\Generic_DS\LinkedList.h(502,6): message : see declaration of 'LinkedList<Order*>::InsertEnd'
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(98,31): error C2660: 'LinkedList<Order*>::InsertEnd': function does not take 1 arguments
+D:\universty\DS-project\DS-project\Restaurant\Generic_DS\LinkedList.h(502,6): message : see declaration of 'LinkedList<Order*>::InsertEnd'
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(101,31): error C2660: 'LinkedList<Order*>::InsertEnd': function does not take 1 arguments
+D:\universty\DS-project\DS-project\Restaurant\Generic_DS\LinkedList.h(502,6): message : see declaration of 'LinkedList<Order*>::InsertEnd'
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(81,3): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(164,20): error C2065: 'TYPE_NRM': undeclared identifier
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(168,20): error C2065: 'TYPE_VGAN': undeclared identifier
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(173,20): error C2065: 'TYPE_VIP': undeclared identifier
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(190,34): error C2065: 'TYPE_NRM': undeclared identifier
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(192,34): error C2065: 'TYPE_VGAN': undeclared identifier
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(194,34): error C2065: 'TYPE_VIP': undeclared identifier
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(229,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(247,18): error C2065: 'ORD_TYPE': undeclared identifier
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(247,35): error C2065: 'TYPE_CNT': undeclared identifier
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(260,22): error C2065: 'TYPE_CNT': undeclared identifier
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(262,39): error C2065: 'ORD_TYPE': undeclared identifier
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(262,48): error C2146: syntax error: missing ')' before identifier 'OType'
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(262,48): error C2146: syntax error: missing ';' before identifier 'OType'
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(262,53): error C2059: syntax error: ')'
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(283,3): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.

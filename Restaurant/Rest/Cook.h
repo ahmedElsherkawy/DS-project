@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\Defs.h"
+#include "../Defs.h"
 
 #pragma once
 class Cook
@@ -21,5 +21,7 @@ public:
 	ORD_TYPE GetType() const;
 	void setID(int);
 	void setType(ORD_TYPE);
-
+	//by caroline
+	void setSpeed(int s);
+	int GetSpeed()const ;
 };

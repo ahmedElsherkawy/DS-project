@@ -41,4 +41,11 @@ void Cook::setType(ORD_TYPE t)
 	type = t;
 }
 
-
+void Cook:: setSpeed(int s)
+{
+	speed=s;
+}
+int Cook:: GetSpeed()const 
+{
+	return speed;
+}
