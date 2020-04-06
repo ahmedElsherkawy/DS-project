@@ -5,9 +5,8 @@
 #include "..\CMUgraphicsLib\CMUgraphics.h"
 #include "..\GUI\GUI.h"
 #include "..\Generic_DS\Queue.h"
-#include "..\Generic_DS\LinkedList.h"
 #include "..\Events\Event.h"
-
+#include"..\Generic_DS\LinkedList.h"
 
 #include "Order.h"
 
@@ -22,13 +21,14 @@ private:
 	Queue<Cook *> freeVegancooks;
 	Queue<Cook *> freeVIPCooks;
 	Queue<Order*> finishedOrders;
-	LinkedList<Cook*> busyCooks;
-	LinkedList<Cook*> inBreakCooks;
-	LinkedList<Order*> WaitingNormal;
-	LinkedList<Order*> WaitingVIP;
-	LinkedList <Order*> inServiceOrders;
 
-	//lists of VIP orders ,normal orders,inservive orders,busy cooks
+	LinkedList<Cook *> busyCooks;
+	LinkedList<Cook *> inBreakCooks;
+	LinkedList<Order *> WaitingNormal;
+	LinkedList<Order *> WaitingVIP;
+	LinkedList <Order *> inServiceOrders;
+
+	//lists of VIP orders ,normal orders,inservive orders,busy cooks and in bresk cooks
 	
 
 	/// ==> 
@@ -60,13 +60,13 @@ public:
 	// TODO: Add More Member Functions As Needed
 	//
 	void addToEventQueue(Event* E);
-	void LoadingFunc(char * address);
+	void LoadingFunc(string address);
 	void SimulationFunc_INTR();
 /// ===================    DEMO-related functions. Should be removed in phases 1&2   ================= 
 
 	void Just_A_Demo();	//just to show a demo and should be removed in phase1 1 & 2
 	void AddtoDemoQueue(Order* po);	//adds an order to the demo queue
-
+	void Cancellation(int ordId);
 /// ================================================================================================== 
 
 

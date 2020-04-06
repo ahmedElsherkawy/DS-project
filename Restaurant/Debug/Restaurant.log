@@ -1,0 +1,8 @@
+﻿  Demo_Main.cpp
+  ArrivalEvent.cpp
+  Restaurant.cpp
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(76,3): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(214,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(268,3): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
+  Generating Code...
+  Restaurant.vcxproj -> D:\universty\DS-project\DS-project\Debug\Restaurant.exe

@@ -3,8 +3,8 @@
 #include <iostream>
 using namespace std;
 #include<fstream>
-#include"../CancellationEvent.h"
-#include"../PromotionEvent.h"
+#include"..\Events\CancellationEvent.h"
+#include"..\Events\PromotionEvent.h"
 #include "Restaurant.h"
 #include "..\Events\ArrivalEvent.h"
 
@@ -63,9 +63,52 @@ Restaurant::~Restaurant()
 }
 void Restaurant::SimulationFunc_INTR() {
 
+	string fileName = pGUI->GetString();
 	//get file name
+	LoadingFunc(fileName);
 	//call loading function 
+	int timeStep = 1;
 	//make time var   int timestep=1;
+	while (!EventsQueue.isEmpty())
+	{
+		//print current timestep
+		char ts[10];
+		itoa(timeStep, ts, 10); // 3awz as2l de bt3ml eh
+		pGUI->PrintMessage(ts);
+
+		Event *E;
+		EventsQueue.peekFront(E);
+		if (E->getEventTime() == timeStep)
+		{
+			E->Execute(this);
+			EventsQueue.dequeue(E);	//remove event from the queue
+			delete E;		//deallocate event object from memory
+		}
+
+
+
+		Order* ON = WaitingNormal.getFirst();
+		inServiceOrders.InsertEnd(ON);
+		Order* OV = WaitingVIP.getFirst();
+		inServiceOrders.InsertEnd(OV);
+		Order* OG;
+		WaitingVegan.dequeue(OG);
+		inServiceOrders.InsertEnd(OG);
+
+
+		while (timeStep % 5 == 0)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				Order* done = inServiceOrders.getFirst();
+				finishedOrders.enqueue(done);
+			}
+		}
+
+
+		pGUI->UpdateInterface();
+	}
+	
 	//logic
 	//call filldrawinglist
 	//call updateinterface
@@ -94,32 +137,37 @@ void Restaurant::FillDrawingList()
 	//To add Cooks it should call function  void GUI::AddToDrawingList(Cook* pCc);
 
 }
+///done by ola
+void Cancellation(int ordId) {
+	
+}
+
 /// done by ola
 void Restaurant::addToEventQueue(Event* E) {
 	EventsQueue.enqueue(E);
 }
 ///done by ola
-void Restaurant::LoadingFunc(char * address) {
+void Restaurant::LoadingFunc(string address) {
 	fstream input_file;
 	input_file.open(address);
 	int cookN, cookG, cookV, sn, sg, sv, BO, BN, BG, BV, pro;
 	input_file >> cookN >> cookG >> cookV >> sn >> sg >> sv >> BO >> BN >> BG >> BV >> pro;
 	//cout << cookN << cookG << cookV << sn << sg << sv << BO << BN << BG << BV;
 	Cook * NC;
-	Queue<Cook > Ncooks;
+	
 	for (int i = 0; i < cookN; i++) {
 		NC = new Cook(i, TYPE_NRM, sn, BO, BN);
-		//Ncooks.enqueue(Cook(i, TYPE_NRM, sn, BO, BN));
+		freeNormalCooks.enqueue(NC);
 	}
-	Queue<Cook >Gcooks;
 	for (int i = cookN; i < cookN + cookG; i++) {
 		NC = new Cook(i, TYPE_VGAN, sg, BO, BG);
-		//Ncooks.enqueue(Cook(i, TYPE_VGAN, sg, BO, BG));
+		freeVegancooks.enqueue(NC);
+
 	}
-	Queue <Cook > Vcooks;
-	for (int i = cookG; i < cookN + cookG + cookV; i++) {
+	for (int i = cookG+ cookN; i < cookN + cookG + cookV; i++) {
 		NC = new Cook(i, TYPE_VIP, sv, BO, BV);
-		//Ncooks.enqueue(Cook(i, TYPE_VIP, sv, BO, BV));
+		freeVIPCooks.enqueue(NC);
+		
 	}
 	
 	int nevents;

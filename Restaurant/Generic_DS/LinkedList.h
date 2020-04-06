@@ -105,6 +105,30 @@ public:
 	}
 
 
+	/*void InsertEnd(Node * data) {
+		if (Head)
+		{
+			Node<T>* p = Head;
+			while (p->getNext() != nullptr)
+			{
+				p = p->getNext();
+			}
+
+			Node<T>* R = data;
+			p->setNext(data);
+			//R->setItem(data);
+			data->setNext(nullptr);
+		}
+		else
+		{
+			//Node<T>* R = new Node<T>(data);
+			Head = data;
+			R->setNext(nullptr);
+
+		}
+	}*/
+
+
 	//[2]Find 
 	//searches for a given value in the list, returns true if found; false otherwise.
 	bool Find(T Key) {
@@ -430,6 +454,18 @@ public:
 		}*/
 	}
 
+
+
+
+	T getFirst()
+	{
+		Node<T>* p = Head;
+		Head = Head->getNext();
+		T x = p->getItem();
+		delete p;
+		return x;
+		//done by moataz
+	}
 
 };
 
