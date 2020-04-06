@@ -10,9 +10,9 @@ Cook::~Cook()
 {
 }
 
-Cook::Cook(int id, ORD_TYPE t, int s,int c, int b) {
+Cook::Cook(int id, COOK_TYPE t, int s,int c, int b) {
 	ID = id;
-	type = t;
+	cookType = t;
 	speed = s;
 	capacity = c;
 	breaktime = b;
@@ -41,11 +41,34 @@ void Cook::setType(ORD_TYPE t)
 	type = t;
 }
 
-void Cook:: setSpeed(int s)
-{
-	speed=s;
+void Cook::setCookType(COOK_TYPE t) {
+	cookType = t;
 }
-int Cook:: GetSpeed()const 
+COOK_TYPE Cook::getCookType() {
+	return cookType;
+}
+
+void Cook::setFinishService(int Ts, Order * ord) {
+	finishService = Ts;// still not finished i am waiting for class order to be ready  
+}
+int Cook::getFinishService() {
+	return finishService;
+}
+void Cook::setFinishBreak(int Ts) {
+	finishBreak = Ts + breaktime;
+}
+int Cook::getFinishBreak() {
+	return finishBreak;
+}
+
+
+
+///done by caroline
+void Cook::setSpeed(int s)
+{
+	speed = s;
+}
+int Cook::GetSpeed()const
 {
 	return speed;
 }

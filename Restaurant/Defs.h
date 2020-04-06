@@ -13,7 +13,15 @@ enum ORD_TYPE	//types of orders
 	TYPE_CNT	//Number of types
 
 };
+/// done by ola
+enum COOK_TYPE //types of cooks
+{
+	TYPE_NRM_COOK,	//normal cook
+	TYPE_VGAN_COOK,	//vegan
+	TYPE_VIP_COOK,	//VIP
+	TYPE_CNT_COOK
 
+};
 enum ORD_STATUS	//order status
 {
 	WAIT,	//waiting to be served
