@@ -112,10 +112,17 @@
       <Filter>Generic_DS</Filter>
     </ClInclude>
     <ClInclude Include="Events\CancellationEvent.h">
+<<<<<<< HEAD
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="Events\PromotionEvent.h">
       <Filter>Events</Filter>
+=======
+      <Filter>Restaurant</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\PromotionEvent.h">
+      <Filter>Restaurant</Filter>
+>>>>>>> afc05bc855b6ab79b48fc22ddf77361aba5e96ba
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -243,12 +250,17 @@
     <ClCompile Include="Rest\Cook.cpp">
       <Filter>Restaurant</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Events\CancellationEvent.cpp">
       <Filter>Events</Filter>
     </ClCompile>
     <ClCompile Include="Events\PromotionEvent.cpp">
       <Filter>Events</Filter>
     </ClCompile>
+=======
+    <ClCompile Include="Events\CancellationEvent.cpp" />
+    <ClCompile Include="Events\PromotionEvent.cpp" />
+>>>>>>> afc05bc855b6ab79b48fc22ddf77361aba5e96ba
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMUgraphicsLib\Manual.txt">

@@ -3,8 +3,13 @@
 #include <iostream>
 using namespace std;
 #include<fstream>
+<<<<<<< HEAD
 #include"..\Events\CancellationEvent.h"
 #include"..\Events\PromotionEvent.h"
+=======
+#include"..\Events\PromotionEvent.h"
+#include"..\Events\CancellationEvent.h"
+>>>>>>> afc05bc855b6ab79b48fc22ddf77361aba5e96ba
 #include "Restaurant.h"
 #include "..\Events\ArrivalEvent.h"
 

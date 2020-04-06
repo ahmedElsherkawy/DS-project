@@ -81,7 +81,8 @@ public:
 
 	//[1]InsertEnd 
 	//inserts a new node at end if the list
-	void InsertEnd(const T& data) {
+	void InsertEnd( T data,int key) {
+		key=0;
 		if (Head)
 		{
 			Node<T>* p = Head;
@@ -469,4 +470,151 @@ public:
 
 };
 
-#endif	
+#endif
+//done by caroline
+template <>
+class LinkedList<Order*>
+{
+private:
+	Node<Order*> *Head;	//Pointer to the head of the list
+	//You can add tail pointer too (depending on your problem)
+public:
+	LinkedList()
+	{
+		Head = nullptr;
+	}
+
+	//List is being desturcted ==> delete all items in the list
+	~LinkedList()
+	{
+		DeleteAll(); 
+	}
+	void DeleteAll()
+	{
+		Node<Order*> *P = Head;
+		while (Head)
+		{
+			P = Head->getNext();
+			delete Head;
+			Head = P;
+		}
+	}
+void InsertEnd( Order* ordp,int key) {
+	if(!Head)
+	{
+		Node<Order*> *R = new Node<Order*>(ordp);
+		R->setNext(Head);
+		Head = R;
+		return;
+	}
+	
+	if (key==1)//comparing priority desecndingly for vip orders
+	{
+		Node<Order*> *P = Head;
+		Node<Order*> *R= P->getNext();
+
+		while(R)
+		{
+			Order* op=P->getItem();
+			Order* oR=R->getItem();
+			if (ordp->GetPriority() > op->GetPriority())
+			{
+				Node<Order*> *N = new Node<Order*>(ordp);
+				N->setNext(Head);
+				Head = N;
+				return;
+			}
+
+			else if((ordp->GetPriority() < op->GetPriority() && ordp->GetPriority() > oR->GetPriority()) || (ordp->GetPriority() == op->GetPriority() && oR->GetPriority() != op->GetPriority()))
+			{
+				Node<Order*> *N = new Node<Order*>(ordp);
+				N->setNext(R);
+				P->setNext(N);
+				return;
+			}
+			else
+			{
+				P=P->getNext();
+				R=R->getNext();
+			}
+	
+		}
+		if(!R)
+		{
+			Order* op=P->getItem();
+			if (ordp->GetPriority()>op->GetPriority())
+			{
+				Node<Order*> *N = new Node<Order*>(ordp);
+				N->setNext(Head);
+				Head= N;
+				return;
+			}
+			else
+			{
+				Node<Order*> *N = new Node<Order*>(ordp);
+				N->setNext(R);
+				P->setNext(N);
+				return;
+			}
+		}
+	}
+
+	if (key==2) 
+	{
+		Node<Order*> *P = Head;
+		Node<Order*> *R= P->getNext();
+		while(R)
+		{
+			Order* op=P->getItem();
+			Order* oR=R->getItem();
+			if (ordp->GetArrivalTime() < op->GetArrivalTime())
+			{
+				Node<Order*> *N = new Node<Order*>(ordp);
+				N->setNext(Head);
+				Head = N;
+				return;
+			}
+			else if((ordp->GetArrivalTime() > op->GetArrivalTime() && ordp->GetArrivalTime() < oR->GetArrivalTime()) || (ordp->GetArrivalTime() == op->GetPriority() && oR->GetPriority() != op->GetPriority()))
+			{
+				Node<Order*> *N = new Node<Order*>(ordp);
+				N->setNext(R);
+				P->setNext(N);
+				return;
+			}
+			else
+			{
+				P=P->getNext();
+				R=R->getNext();
+			}
+
+		}
+
+		if(!R)
+		{
+			Order* op=P->getItem();
+			if (ordp->GetArrivalTime()<op->GetArrivalTime())
+			{
+				Node<Order*> *N = new Node<Order*>(ordp);
+				N->setNext(Head);
+				Head= N;
+				return;
+			}
+			else
+			{
+				Node<Order*> *N = new Node<Order*>(ordp);
+				N->setNext(R);
+				P->setNext(N);
+				return;
+			}
+		}
+	
+
+	}
+
+
+	}
+
+
+
+
+};

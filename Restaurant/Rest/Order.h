@@ -2,7 +2,7 @@
 #define __ORDER_H_
 
 #include "..\Defs.h"
-
+#include "Cook.h"
 class Order
 {
 
@@ -16,10 +16,11 @@ protected:
 
 	int ArrTime, ServTime, FinishTime;	//arrival, service start, and finish times
 	
-	
 	//
 	// TODO: Add More Data Members As Needed
-	//
+	// done by caroline
+	int size;
+	int Priority;
 
 public:
 	Order(int ID, ORD_TYPE r_Type);
@@ -37,7 +38,21 @@ public:
 	
 	//
 	// TODO: Add More Member Functions As Needed
-	//
+	// done by caroline
+	
+
+	void SetPriority();
+	int GetPriority() const;
+	void SetArrivalTime(int AT);
+	int GetArrivalTime() const;
+	/*void SetServiceTime(Cook* co);
+	int GetServiceTime() const;
+	void SetFinishTime();
+	int GetFinishTime() const;*/
+	void Settotalmoney(int mo);
+	double Gettotalmoney() const;
+	void Setsize(double s);
+	int Getsize() const;
 
 };
 
