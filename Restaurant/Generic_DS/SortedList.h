@@ -90,7 +90,13 @@ public:
 	}
 
 
+	bool isempty()
+	{
+		if (Head == nullptr)
+			return true;
 
+		return false;
+	}
 
 	bool pop(T& frntEntry)
 	{
@@ -220,7 +226,7 @@ public:
 	//		return true;
 	//}	
 
-	
+    T* toArray(int& count);
 
 
 
@@ -233,6 +239,41 @@ class SortedList<Cook *>
 {
 	Node<Cook *> *Head;
 public:
+
+	Cook* toArray(int& count)
+	{
+		count = 0;
+
+		if (Head)
+			return nullptr;
+		//counting the no. of items in the Queue
+		Node<Cook*>* p = Head;
+		while (p)
+		{
+			count++;
+			p = p->getNext();
+		}
+
+
+		Cook** Arr = new Cook* [count];
+		p = Head;
+		for (int i = 0; i < count; i++)
+		{
+			Arr[i] = p->getItem();
+			p = p->getNext();
+		}
+		return *Arr;
+	}
+
+	bool isempty()
+	{
+		if (Head == nullptr)
+			return true;
+
+		return false;
+	}
+
+
 	void InsertSorted( Cook * data, int key) {
 		Node <Cook *>* nptr = new Node<Cook *>(data);
 		if (!Head) {
@@ -292,13 +333,49 @@ template<>
 class SortedList<Order *>
 {
 	Node<Order *> *Head;
-
+	  
 public:
 
 	SortedList()
 	{
 		Head = nullptr;
 	}
+
+
+		bool isempty()
+	    {
+		if (Head == nullptr)
+			return true;
+
+		return false;
+	    }
+
+
+		Order* toArray(int& count)
+		{
+			count = 0;
+
+			if (Head)
+				return nullptr;
+			//counting the no. of items in the Queue
+			Node<Order*>* p = Head;
+			while (p)
+			{
+				count++;
+				p = p->getNext();
+			}
+
+
+			Order** Arr = new Order * [count];
+			p = Head;
+			for (int i = 0; i < count; i++)
+			{
+				Arr[i] = p->getItem();
+				p = p->getNext();
+			}
+			return *Arr;
+		}
+
 
 	//List is being desturcted ==> delete all items in the list
 	~SortedList()
@@ -457,4 +534,48 @@ public:
 
 	}
 
+
+	bool pop(Order* & frntEntry)
+	{
+		if (!Head)return false;
+
+
+		Node<Order*>* nodeToDeletePtr = Head;
+		frntEntry = Head->getItem();
+		Head = Head->getNext();
+		// Free memory reserved by the dequeued node
+		delete nodeToDeletePtr;
+
+
+		return true;
+
+	}
 };
+
+
+template <typename T>
+T* SortedList<T>::toArray(int& count)
+{
+	count = 0;
+
+	if (!Head)
+		return nullptr;
+	//counting the no. of items in the Queue
+	Node<T>* p = Head;
+	while (p)
+	{
+		count++;
+		p = p->getNext();
+	}
+
+
+	T* Arr = new T[count];
+	p = Head;
+	for (int i = 0; i < count; i++)
+	{
+		Arr[i] = p->getItem();
+		p = p->getNext();
+	}
+	return Arr;
+
+}

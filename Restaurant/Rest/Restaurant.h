@@ -59,7 +59,7 @@ public:
 	// TODO: Add More Member Functions As Needed
 	//
 	void addToEventQueue(Event* E);
-	void LoadingFunc(char* address);
+	void LoadingFunc(string address);
 	void SimulationFunc_INTR();
 	void Cancellation(int ordId);
 	/// ===================    DEMO-related functions. Should be removed in phases 1&2   ================= 

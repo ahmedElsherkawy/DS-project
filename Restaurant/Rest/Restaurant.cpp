@@ -62,8 +62,8 @@ Restaurant::~Restaurant()
 		delete pGUI;
 }
 void Restaurant::SimulationFunc_INTR() {
-
-	/*string fileName = pGUI->GetString();
+	pGUI->PrintMessage("Write Input File Name:");
+	string fileName = pGUI->GetString();
 	//get file name
 	LoadingFunc(fileName);
 	//call loading function
@@ -74,6 +74,7 @@ void Restaurant::SimulationFunc_INTR() {
 		//print current timestep
 		char ts[10];
 		itoa(timeStep, ts, 10); // 3awz as2l de bt3ml eh
+		//pGUI->PrintMessage("TS=");
 		pGUI->PrintMessage(ts);
 
 		Event* E;
@@ -86,14 +87,58 @@ void Restaurant::SimulationFunc_INTR() {
 		}
 
 
+		while (WaitingNormal.isempty()!=true)
+		{
+			Order* ON;
+			WaitingNormal.pop(ON);
 
-		Order* ON = WaitingNormal.getFirst();
-		inServiceOrders.InsertEnd(ON);
-		Order* OV = WaitingVIP.getFirst();
-		inServiceOrders.InsertEnd(OV);
-		Order* OG;
-		WaitingVegan.dequeue(OG);
-		inServiceOrders.InsertEnd(OG);
+
+			inServiceOrders.InsertSorted(ON, 2);
+		}
+		while (WaitingVIP.isempty()!=true)
+		{
+			Order* OV;
+			WaitingVIP.pop(OV);
+			inServiceOrders.InsertSorted(OV, 2);
+		}
+		while (WaitingVegan.isEmpty()!=true)
+		{
+			Order* OG;
+			WaitingVegan.dequeue(OG);
+			inServiceOrders.InsertSorted(OG, 2);
+		}
+
+		/*while (timeStep%5==0)
+		{
+			int o1 = 0, o2 = 0, o3 = 0;
+			Order* OF;
+			while (o1 == 0)
+			{
+				OF=
+			}
+		}*/
+
+		FillDrawingList();
+		pGUI->UpdateInterface();
+
+
+		/*for (int i = 0; i < C_count; i++)
+			pGUI->AddToDrawingList(&pC[i]);
+
+		//Let's add ALL randomly generated Ordes to GUI::DrawingList
+		int size = 0;
+		Order** Demo_Orders_Array = DEMO_Queue.toArray(size);
+
+		for (int i = 0; i < size; i++)
+		{
+			pOrd = Demo_Orders_Array[i];
+			pGUI->AddToDrawingList(pOrd);
+		}*/
+
+		pGUI->waitForClick();
+		timeStep++;
+		pGUI->ResetDrawingList();
+
 
 
 
@@ -102,10 +147,89 @@ void Restaurant::SimulationFunc_INTR() {
 	//logic
 	//call filldrawinglist
 	//call updateinterface
-	*/
+	
 }
 void Restaurant::FillDrawingList()
 {
+	// function to use -->> 
+
+
+	Order* pOrd;
+	//example for queues
+	int size = 0;
+
+	Order** Demo_Orders_Array = finishedOrders.toArray(size);
+
+	for (int i = 0; i < size; i++)
+	{
+		pOrd = Demo_Orders_Array[i];
+		pGUI->AddToDrawingList(pOrd);
+	}
+	Demo_Orders_Array = WaitingVegan.toArray(size);
+
+	for (int i = 0; i < size; i++)
+	{
+		pOrd = Demo_Orders_Array[i];
+		pGUI->AddToDrawingList(pOrd);
+	}
+	////////////////////////////////////////////////
+	int size1 = 0, size2 = 0, size3 = 0;
+	Cook** Normal_Cock_Array = freeNormalCooks.toArray(size1);
+	Cook** Vegan_Cock_Array = freeVegancooks.toArray(size2);
+	Cook** VIP_Cock_Array = freeVIPCooks.toArray(size3);
+	int C_count = size1 + size2 + size3;
+	Cook** pCc = new Cook*[C_count];
+
+	for (int i = 0; i < size1; i++)
+	{
+		pCc[i] = Normal_Cock_Array[i];
+	}
+	for (int i = 0; i < size2; i++)
+	{
+		pCc[size1+i] = Normal_Cock_Array[i];
+	}
+	for (int i = 0; i < size3; i++)
+	{
+		pCc[size1+size2+i] = Normal_Cock_Array[i];
+	}
+
+
+	for (int i = 0; i < C_count; i++)
+		pGUI->AddToDrawingList(pCc[i]);
+
+
+
+
+
+	Order* Orders_Array = WaitingNormal.toArray(size);
+
+	for (int i = 0; i < size; i++)
+	{
+		pOrd = Demo_Orders_Array[i];
+		pGUI->AddToDrawingList(pOrd);
+	}
+	////////////////////////////////////////////
+	Orders_Array = WaitingVIP.toArray(size);
+
+	for (int i = 0; i < size; i++)
+	{
+		pOrd = Demo_Orders_Array[i];
+		pGUI->AddToDrawingList(pOrd);
+	}
+	Orders_Array = inServiceOrders.toArray(size);
+
+	for (int i = 0; i < size; i++)
+	{
+		pOrd = Demo_Orders_Array[i];
+		pGUI->AddToDrawingList(pOrd);
+	}
+	///////////////////////////////////////////////
+	//This function should be implemented in phase1
+	//It should add ALL orders and Cooks to the drawing list
+	//It should get orders from orders lists/queues/stacks/whatever (same for Cooks)
+	//To add orders it should call function void GUI::AddToDrawingList(Order* pOrd);
+	//To add Cooks it should call function  void GUI::AddToDrawingList(Cook* pCc);
+
 	// function to use -->>  pGUI->AddToDrawingList()
 
 	//example for queues
@@ -139,7 +263,7 @@ void Restaurant::addToEventQueue(Event* E) {
 	EventsQueue.enqueue(E);
 }
 ///done by ola
-void Restaurant::LoadingFunc(char* address) {
+void Restaurant::LoadingFunc(string address) {
 	fstream input_file;
 	input_file.open(address);
 	int cookN, cookG, cookV, sn, sg, sv, BO, BN, BG, BV, pro;
@@ -233,6 +357,7 @@ void Restaurant::Just_A_Demo()
 		pC[i].setID(cID);
 		pC[i].setType((ORD_TYPE)(rand() % TYPE_CNT));
 	}
+
 
 
 	int EvTime = 0;

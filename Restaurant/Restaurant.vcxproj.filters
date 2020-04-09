@@ -108,14 +108,14 @@
     <ClInclude Include="Rest\Cook.h">
       <Filter>Restaurant</Filter>
     </ClInclude>
-    <ClInclude Include="Generic_DS\LinkedList.h">
-      <Filter>Generic_DS</Filter>
-    </ClInclude>
     <ClInclude Include="Events\CancellationEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="Events\PromotionEvent.h">
       <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic_DS\SortedList.h">
+      <Filter>Generic_DS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

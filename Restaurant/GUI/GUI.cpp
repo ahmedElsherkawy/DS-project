@@ -254,7 +254,7 @@ void GUI::AddToDrawingList(Cook* pC)
 	
 	DrawingItem *pDitem=new DrawingItem;
 	pDitem->ID = pC->GetID();
-	pDitem->clr = DrawingColors[pC->GetType()];
+	pDitem->clr = DrawingColors[pC->getCookType()];
 	pDitem->region = COOK_REG;
 	
 	DrawingList[DrawingItemsCount++]=pDitem;
