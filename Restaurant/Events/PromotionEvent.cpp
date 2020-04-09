@@ -1,4 +1,5 @@
 #include "PromotionEvent.h"
+#include "..\Rest\Restaurant.h"
 
 
 
@@ -8,7 +9,11 @@ PromotionEvent::PromotionEvent(int eTime, int oID, double m) :Event(eTime, oID)
 }
 
 void PromotionEvent::Execute(Restaurant* pRest) {
-
+	
+	///done by caroline
+	Order* ord;
+	Order* pOrd=pRest->Removefromwaitingnormal(this->OrderID);
+pRest->Addtowaitingvip(pOrd);
 }
 
 PromotionEvent::~PromotionEvent()

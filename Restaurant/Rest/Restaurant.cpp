@@ -252,6 +252,26 @@ void Restaurant::FillDrawingList()
 	//To add Cooks it should call function  void GUI::AddToDrawingList(Cook* pCc);
 
 }
+///done by caroline
+void Restaurant::Addtowaitingvegan(Order *pOrd)
+{
+	WaitingVegan.enqueue(pOrd);
+}
+void Restaurant::Addtowaitingnormal(Order *pOrd)
+{
+	WaitingNormal.InsertSorted(pOrd,2);
+}
+void Restaurant::Addtowaitingvip(Order *pOrd)
+{
+ WaitingVIP.InsertSorted(pOrd,1);
+}
+Order * Restaurant::Removefromwaitingnormal(int ordId)
+{
+	Order *pOrd;
+	WaitingNormal.DeleteOrder(ordId,pOrd);
+	return pOrd;
+}
+
 ///done by ola
 void Restaurant::Cancellation(int ordId) {
 	Order* ord;

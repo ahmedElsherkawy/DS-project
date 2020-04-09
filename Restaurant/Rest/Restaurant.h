@@ -62,6 +62,11 @@ public:
 	void LoadingFunc(string address);
 	void SimulationFunc_INTR();
 	void Cancellation(int ordId);
+	void Addtowaitingvegan(Order *pOrd);
+	void Addtowaitingnormal(Order *pOrd);
+	void Addtowaitingvip(Order *pOrd);
+	Order* Removefromwaitingnormal(int ordId);
+
 	/// ===================    DEMO-related functions. Should be removed in phases 1&2   ================= 
 
 	void Just_A_Demo();	//just to show a demo and should be removed in phase1 1 & 2
