@@ -77,14 +77,7 @@ void Restaurant::SimulationFunc_INTR() {
 		//pGUI->PrintMessage("TS=");
 		pGUI->PrintMessage(ts);
 
-		Event* E;
-		EventsQueue.peekFront(E);
-		if (E->getEventTime() == timeStep)
-		{
-			E->Execute(this);
-			EventsQueue.dequeue(E);	//remove event from the queue
-			delete E;		//deallocate event object from memory
-		}
+		
 
 
 		while (WaitingNormal.isempty()!=true)
@@ -94,18 +87,32 @@ void Restaurant::SimulationFunc_INTR() {
 
 
 			inServiceOrders.InsertSorted(ON, 2);
+			//delete ON;
 		}
 		while (WaitingVIP.isempty()!=true)
 		{
 			Order* OV;
 			WaitingVIP.pop(OV);
 			inServiceOrders.InsertSorted(OV, 2);
+			//delete OV;
 		}
 		while (WaitingVegan.isEmpty()!=true)
 		{
 			Order* OG;
 			WaitingVegan.dequeue(OG);
 			inServiceOrders.InsertSorted(OG, 2);
+			//delete OG;
+		}
+
+		Event* E;
+		EventsQueue.peekFront(E);
+		while (E->getEventTime() == timeStep)
+		{
+			EventsQueue.dequeue(E);
+			E->Execute(this);
+			//EventsQueue.dequeue(E);	//remove event from the queue
+			delete E;		//deallocate event object from memory
+			EventsQueue.peekFront(E);
 		}
 
 		/*while (timeStep%5==0)
@@ -121,7 +128,6 @@ void Restaurant::SimulationFunc_INTR() {
 		FillDrawingList();
 		pGUI->UpdateInterface();
 
-
 		/*for (int i = 0; i < C_count; i++)
 			pGUI->AddToDrawingList(&pC[i]);
 
@@ -135,8 +141,9 @@ void Restaurant::SimulationFunc_INTR() {
 			pGUI->AddToDrawingList(pOrd);
 		}*/
 
-		pGUI->waitForClick();
+		//pGUI->waitForClick();
 		timeStep++;
+		//pGUI->waitForClick();
 		pGUI->ResetDrawingList();
 
 
@@ -165,11 +172,13 @@ void Restaurant::FillDrawingList()
 		pOrd = Demo_Orders_Array[i];
 		pGUI->AddToDrawingList(pOrd);
 	}
-	Demo_Orders_Array = WaitingVegan.toArray(size);
 
-	for (int i = 0; i < size; i++)
+	int waitingVigenSize = 0;
+	Order ** Waiting_Vegan_Orders = WaitingVegan.toArray(waitingVigenSize);
+
+	for (int i = 0; i < waitingVigenSize; i++)
 	{
-		pOrd = Demo_Orders_Array[i];
+		pOrd = Waiting_Vegan_Orders[i];
 		pGUI->AddToDrawingList(pOrd);
 	}
 	////////////////////////////////////////////////
@@ -186,11 +195,11 @@ void Restaurant::FillDrawingList()
 	}
 	for (int i = 0; i < size2; i++)
 	{
-		pCc[size1+i] = Normal_Cock_Array[i];
+		pCc[size1+i] = Vegan_Cock_Array[i];
 	}
 	for (int i = 0; i < size3; i++)
 	{
-		pCc[size1+size2+i] = Normal_Cock_Array[i];
+		pCc[size1+size2+i] = VIP_Cock_Array[i];
 	}
 
 
@@ -199,31 +208,33 @@ void Restaurant::FillDrawingList()
 
 
 
+	int waitingNormalSize = 0;
+	Order** Waiting_Normal_Orders = WaitingNormal.toArray(waitingNormalSize);
 
-
-	Order* Orders_Array = WaitingNormal.toArray(size);
-
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < waitingNormalSize; i++)
 	{
-		pOrd = Demo_Orders_Array[i];
+		pOrd = Waiting_Normal_Orders[i];
 		pGUI->AddToDrawingList(pOrd);
 	}
-	////////////////////////////////////////////
-	Orders_Array = WaitingVIP.toArray(size);
+	////////////////////////////////////////////////
+	int waitingVIPSize = 0;
+	Order** Waiting_VIP_Orders = WaitingVIP.toArray(waitingVIPSize);
 
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < waitingVIPSize; i++)
 	{
-		pOrd = Demo_Orders_Array[i];
+		pOrd = Waiting_VIP_Orders[i];
 		pGUI->AddToDrawingList(pOrd);
 	}
-	Orders_Array = inServiceOrders.toArray(size);
+	////////////////////////////////////////////////
+	int serviceSize = 0;
+	Order** service_Orders = inServiceOrders.toArray(serviceSize);
 
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < serviceSize; i++)
 	{
-		pOrd = Demo_Orders_Array[i];
+		pOrd = service_Orders[i];
 		pGUI->AddToDrawingList(pOrd);
 	}
-	///////////////////////////////////////////////
+	////////////////////////////////////////////////
 	//This function should be implemented in phase1
 	//It should add ALL orders and Cooks to the drawing list
 	//It should get orders from orders lists/queues/stacks/whatever (same for Cooks)
@@ -263,7 +274,7 @@ void Restaurant::Addtowaitingnormal(Order *pOrd)
 }
 void Restaurant::Addtowaitingvip(Order *pOrd)
 {
- WaitingVIP.InsertSorted(pOrd,1);
+    WaitingVIP.InsertSorted(pOrd,1);
 }
 Order * Restaurant::Removefromwaitingnormal(int ordId)
 {
@@ -282,6 +293,7 @@ void Restaurant::Cancellation(int ordId) {
 void Restaurant::addToEventQueue(Event* E) {
 	EventsQueue.enqueue(E);
 }
+
 ///done by ola
 void Restaurant::LoadingFunc(string address) {
 	fstream input_file;
@@ -291,19 +303,19 @@ void Restaurant::LoadingFunc(string address) {
 	//cout << cookN << cookG << cookV << sn << sg << sv << BO << BN << BG << BV;
 	Cook* NC;
 
-	for (int i = 0; i < cookN; i++) {
+	for (int i = 1; i < 1+cookN; i++) {
 		NC = new Cook(i, TYPE_NRM_COOK, sn, BO, BN);
 		freeNormalCooks.enqueue(NC);
 	}
-	for (int i = cookN; i < cookN + cookG; i++) {
+
+	for (int i = cookN+1; i < 1+cookN + cookG; i++) {
 		NC = new Cook(i, TYPE_VGAN_COOK, sg, BO, BG);
 		freeVegancooks.enqueue(NC);
-
 	}
-	for (int i = cookG + cookN; i < cookN + cookG + cookV; i++) {
+
+	for (int i = cookG + cookN+1; i < 1+cookN + cookG + cookV; i++) {
 		NC = new Cook(i, TYPE_VIP_COOK, sv, BO, BV);
 		freeVIPCooks.enqueue(NC);
-
 	}
 
 	int nevents;

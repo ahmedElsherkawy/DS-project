@@ -240,11 +240,11 @@ class SortedList<Cook *>
 	Node<Cook *> *Head;
 public:
 
-	Cook* toArray(int& count)
+	Cook** toArray(int& count)
 	{
 		count = 0;
 
-		if (Head)
+		if (!Head)
 			return nullptr;
 		//counting the no. of items in the Queue
 		Node<Cook*>* p = Head;
@@ -262,7 +262,7 @@ public:
 			Arr[i] = p->getItem();
 			p = p->getNext();
 		}
-		return *Arr;
+		return Arr;
 	}
 
 	bool isempty()
@@ -351,11 +351,11 @@ public:
 	    }
 
 
-		Order* toArray(int& count)
+		Order** toArray(int & count)
 		{
 			count = 0;
 
-			if (Head)
+			if (!Head)
 				return nullptr;
 			//counting the no. of items in the Queue
 			Node<Order*>* p = Head;
@@ -373,7 +373,7 @@ public:
 				Arr[i] = p->getItem();
 				p = p->getNext();
 			}
-			return *Arr;
+			return Arr;
 		}
 
 
@@ -394,7 +394,8 @@ public:
 	}
 
 	void DeleteOrder(int ordID,Order * & ord) {
-		if (!Head) { return; }
+		if (!Head) 
+		{ return; }
 		Node<Order *> *temp;
 		if (Head->getItem()->GetID() == ordID) {
 			temp = Head;
@@ -535,7 +536,7 @@ public:
 	}
 
 
-	bool pop(Order* & frntEntry)
+	bool pop(Order* frntEntry)
 	{
 		if (!Head)return false;
 
@@ -561,7 +562,7 @@ T* SortedList<T>::toArray(int& count)
 	if (!Head)
 		return nullptr;
 	//counting the no. of items in the Queue
-	Node<T>* p = Head;
+	Node<T*>* p = Head;
 	while (p)
 	{
 		count++;
@@ -569,7 +570,7 @@ T* SortedList<T>::toArray(int& count)
 	}
 
 
-	T* Arr = new T[count];
+	T** Arr = new T*[count];
 	p = Head;
 	for (int i = 0; i < count; i++)
 	{
