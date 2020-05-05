@@ -2,7 +2,10 @@
 #define __ORDER_H_
 
 #include "..\Defs.h"
-#include "Cook.h"
+#include "../Rest/Cook.h"
+
+class Cook;
+
 class Order
 {
 
@@ -15,7 +18,7 @@ protected:
 	double totalMoney;	//Total order money
 
 	int ArrTime, ServTime, FinishTime;	//arrival, service start, and finish times
-	
+	int WaitingTime;
 	//
 	// TODO: Add More Data Members As Needed
 	// done by caroline
@@ -45,14 +48,17 @@ public:
 	int GetPriority() const;
 	void SetArrivalTime(int AT);
 	int GetArrivalTime() const;
-	/*void SetServiceTime(Cook* co);
+	void SetServiceTime(Cook* co);
+
 	int GetServiceTime() const;
 	void SetFinishTime();
-	int GetFinishTime() const;*/
+	int GetFinishTime() const;
 	void Settotalmoney(int mo);
 	double Gettotalmoney() const;
 	void Setsize(double s);
 	int Getsize() const;
+	void SetWaitingTime(int ts);
+	int GetWaitingTime() const;
 
 };
 

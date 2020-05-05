@@ -12,6 +12,11 @@ ArrivalEvent::ArrivalEvent(int eTime, int oID, ORD_TYPE oType) :Event(eTime, oID
 {
 	OrdType = oType;
 }
+ ///done by moataz
+char ArrivalEvent::getType()
+{
+	return 'A';
+}
 
 void ArrivalEvent::Execute(Restaurant* pRest)
 {

@@ -466,7 +466,7 @@ public:
 				if (ordp->GetPriority() > op->GetPriority())
 				{
 					Node<Order*> *N = new Node<Order*>(ordp);
-					N->setNext(Head);
+		 			N->setNext(Head);
 					Head = N;
 					return;
 				}
@@ -532,11 +532,61 @@ public:
 
 		}
 
+		if (key == 3)
+		{
+			Node<Order*>* P = Head;
+			Node<Order*>* R = P->getNext();
+			while (R)
+			{
+				Order* op = P->getItem();
+				Order* oR = R->getItem();
+				if (ordp->GetFinishTime() < op->GetFinishTime())
+				{
+					Node<Order*>*N = new Node<Order*>(ordp);
+					N->setNext(Head);
+					Head = N;
+					return;
+				}
+				else if ((ordp->GetFinishTime() > op->GetFinishTime() && ordp->GetFinishTime() < oR->GetFinishTime()) || (ordp->GetFinishTime() == op->GetFinishTime() && oR->GetFinishTime() != op->GetFinishTime()))
+				{
+					Node<Order*> *N = new Node<Order*>(ordp);
+					N->setNext(R);
+					P->setNext(N);
+					return;
+				}
+				else
+				{
+					P = P->getNext();
+					R = R->getNext();
+				}
+
+			}
+
+			if (!R)
+			{
+				Order* op = P->getItem();
+				if (ordp->GetFinishTime() < op->GetFinishTime())
+				{
+					Node<Order*> *N = new Node<Order*>(ordp);
+					N->setNext(Head);
+					Head = N;
+					return;
+				}
+				else
+				{
+					Node<Order*>* N = new Node<Order*>(ordp);
+					N->setNext(R);
+					P->setNext(N);
+					return;
+				}
+			}
+		}
+
 
 	}
 
 
-	bool pop(Order* frntEntry)
+	bool pop(Order*& frntEntry)
 	{
 		if (!Head)return false;
 
@@ -544,10 +594,20 @@ public:
 		Node<Order*>* nodeToDeletePtr = Head;
 		frntEntry = Head->getItem();
 		Head = Head->getNext();
-		// Free memory reserved by the dequeued node
+		//Free memory reserved by the dequeued node
 		delete nodeToDeletePtr;
 
 
+		return true;
+
+	}
+
+	bool peek(Order*& frntEntry) const
+	{
+		if (!Head)
+			return false;
+
+		frntEntry = Head->getItem();
 		return true;
 
 	}

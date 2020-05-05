@@ -28,8 +28,6 @@ void Restaurant::RunSimulation()
 		break;
 	case MODE_SLNT:
 		break;
-	case MODE_DEMO:
-		Just_A_Demo();
 
 	};
 
@@ -69,42 +67,55 @@ void Restaurant::SimulationFunc_INTR() {
 	//call loading function
 	int timeStep = 1;
 	//make time var   int timestep=1;
-	while (!EventsQueue.isEmpty())
+	while (!EventsQueue.isEmpty() || inServiceOrders.isempty()==false)
 	{
 		//print current timestep
-		char ts[10];
-		itoa(timeStep, ts, 10); // 3awz as2l de bt3ml eh
+		//char ts[10];
+		//itoa(timeStep, ts, 10); // 3awz as2l de bt3ml eh
 		//pGUI->PrintMessage("TS=");
-		pGUI->PrintMessage(ts);
+		//pGUI->printInfo(ts);
 
 		
-
-
-		while (WaitingNormal.isempty()!=true)
+		Event* E;
+		EventsQueue.peekFront(E);
+		while (E->getEventTime() == timeStep)
 		{
-			Order* ON;
+			EventsQueue.dequeue(E);
+			if (E->getType() != 'P')
+			{
+				E->Execute(this);
+			}
+			//EventsQueue.dequeue(E);	//remove event from the queue
+			delete E;		//deallocate event object from memory
+			EventsQueue.peekFront(E);
+		}
+
+
+		if (WaitingNormal.isempty()==false)
+		{
+			Order* ON=nullptr;
 			WaitingNormal.pop(ON);
-
-
-			inServiceOrders.InsertSorted(ON, 2);
+			AddtoServiceList(ON);
 			//delete ON;
 		}
-		while (WaitingVIP.isempty()!=true)
+		if(WaitingVIP.isempty()!=true)
 		{
-			Order* OV;
+			Order* OV=nullptr;
 			WaitingVIP.pop(OV);
-			inServiceOrders.InsertSorted(OV, 2);
+			AddtoServiceList(OV);
 			//delete OV;
 		}
-		while (WaitingVegan.isEmpty()!=true)
+		if(WaitingVegan.isEmpty()!=true)
 		{
 			Order* OG;
 			WaitingVegan.dequeue(OG);
-			inServiceOrders.InsertSorted(OG, 2);
+			AddtoServiceList(OG);
 			//delete OG;
 		}
 
-		Event* E;
+
+
+		/*Event * E;
 		EventsQueue.peekFront(E);
 		while (E->getEventTime() == timeStep)
 		{
@@ -113,20 +124,47 @@ void Restaurant::SimulationFunc_INTR() {
 			//EventsQueue.dequeue(E);	//remove event from the queue
 			delete E;		//deallocate event object from memory
 			EventsQueue.peekFront(E);
+		}*/
+
+		if(timeStep % 5 == 0)
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				if (inServiceOrders.isempty() == false)
+				{
+					Order* OF=nullptr;
+					inServiceOrders.pop(OF);
+					AddtofinishedOrders(OF);
+				}
+			}
 		}
 
-		/*while (timeStep%5==0)
-		{
-			int o1 = 0, o2 = 0, o3 = 0;
-			Order* OF;
-			while (o1 == 0)
-			{
-				OF=
-			}
-		}*/
+
+
+
 
 		FillDrawingList();
 		pGUI->UpdateInterface();
+
+		char ts[10];
+		itoa(timeStep, ts, 10);
+		char CN[10];
+		itoa(getCooksNormal(), CN, 10);
+		char CG[10];
+		itoa(getCooksVigen(), CG, 10);
+		char CV[10];
+		itoa(getCooksVIP(), CV, 10);
+		char WN[10];
+		itoa(getNumberWaitingNormal(), WN, 10);
+		char WG[10];
+		itoa(getNumberWaitingVigen(), WG, 10);
+		char WV[10];
+		itoa(getNumberWaitingVIP(), WV, 10);
+		char OC[10];
+		itoa(getNumberofCooks(), OC, 10);
+		char OT[10];
+		itoa(getNumberWaitingVIP()+getNumberWaitingVigen()+getNumberWaitingNormal(), OT, 10);
+		pGUI->printInfo(ts, CN, CG, CV,WN,WG,WV,OC,OT);
 
 		/*for (int i = 0; i < C_count; i++)
 			pGUI->AddToDrawingList(&pC[i]);
@@ -141,10 +179,11 @@ void Restaurant::SimulationFunc_INTR() {
 			pGUI->AddToDrawingList(pOrd);
 		}*/
 
-		//pGUI->waitForClick();
 		timeStep++;
 		//pGUI->waitForClick();
 		pGUI->ResetDrawingList();
+		pGUI->waitForClick();
+		
 
 
 
@@ -175,6 +214,7 @@ void Restaurant::FillDrawingList()
 
 	int waitingVigenSize = 0;
 	Order ** Waiting_Vegan_Orders = WaitingVegan.toArray(waitingVigenSize);
+	setNumberWaitingVigen(waitingVigenSize);
 
 	for (int i = 0; i < waitingVigenSize; i++)
 	{
@@ -184,9 +224,13 @@ void Restaurant::FillDrawingList()
 	////////////////////////////////////////////////
 	int size1 = 0, size2 = 0, size3 = 0;
 	Cook** Normal_Cock_Array = freeNormalCooks.toArray(size1);
+	setCooksNormal(size1);
 	Cook** Vegan_Cock_Array = freeVegancooks.toArray(size2);
+	setCooksVigen(size2);
 	Cook** VIP_Cock_Array = freeVIPCooks.toArray(size3);
+	setCooksVIP(size3);
 	int C_count = size1 + size2 + size3;
+	setNumberofCooks(C_count);
 	Cook** pCc = new Cook*[C_count];
 
 	for (int i = 0; i < size1; i++)
@@ -210,7 +254,7 @@ void Restaurant::FillDrawingList()
 
 	int waitingNormalSize = 0;
 	Order** Waiting_Normal_Orders = WaitingNormal.toArray(waitingNormalSize);
-
+	setNumberWaitingNormal(waitingNormalSize);
 	for (int i = 0; i < waitingNormalSize; i++)
 	{
 		pOrd = Waiting_Normal_Orders[i];
@@ -219,7 +263,7 @@ void Restaurant::FillDrawingList()
 	////////////////////////////////////////////////
 	int waitingVIPSize = 0;
 	Order** Waiting_VIP_Orders = WaitingVIP.toArray(waitingVIPSize);
-
+	setNumberWaitingVIP(waitingVIPSize);
 	for (int i = 0; i < waitingVIPSize; i++)
 	{
 		pOrd = Waiting_VIP_Orders[i];
@@ -275,7 +319,23 @@ void Restaurant::Addtowaitingnormal(Order *pOrd)
 void Restaurant::Addtowaitingvip(Order *pOrd)
 {
     WaitingVIP.InsertSorted(pOrd,1);
+	
 }
+
+void Restaurant::AddtofinishedOrders(Order* pOrd)
+{
+	finishedOrders.enqueue(pOrd);
+	pOrd->setStatus(DONE);
+}
+
+////done by moataz
+void Restaurant::AddtoServiceList(Order* pOrd)
+{
+	inServiceOrders.InsertSorted(pOrd, 3);
+	pOrd->setStatus(SRV);
+}
+
+
 Order * Restaurant::Removefromwaitingnormal(int ordId)
 {
 	Order *pOrd;
@@ -359,7 +419,7 @@ void Restaurant::LoadingFunc(string address) {
 
 //This is just a demo function for project introductory phase
 //It should be removed starting phase 1
-void Restaurant::Just_A_Demo()
+/*void Restaurant::Just_A_Demo()
 {
 
 	//
@@ -466,13 +526,52 @@ void Restaurant::Just_A_Demo()
 
 }
 ////////////////
-
-void Restaurant::AddtoDemoQueue(Order* pOrd)
+*/
+/*void Restaurant::AddtoDemoQueue(Order* pOrd)
 {
 	DEMO_Queue.enqueue(pOrd);
 }
 
 /// ==> end of DEMO-related function
 //////////////////////////////////////////////////////////////////////////////////////////////
+*/
+//// all of below done by moataz
 
+int Restaurant::getNumberofCooks() {
+	return NumberofCooks;
+}
 
+int Restaurant::getNumberWaitingNormal(){
+	return NumberofWaitingNormal;
+}
+
+int Restaurant::getNumberWaitingVigen() {
+	return NumberofWaitingVigen;
+}
+
+int Restaurant::getNumberWaitingVIP() {
+	return NumberofWaitingVIP;
+}
+
+void Restaurant::setNumberofCooks(int x)
+{
+	NumberofCooks = x;
+}
+
+void Restaurant::setNumberWaitingNormal(int x) { NumberofWaitingNormal = x; }
+
+void Restaurant::setNumberWaitingVigen(int x) { NumberofWaitingVigen = x; }
+
+void Restaurant::setNumberWaitingVIP(int x) { NumberofWaitingVIP = x; }
+
+int Restaurant::getCooksNormal() { return CooksNormal; }
+
+int Restaurant::getCooksVigen() { return CooksVigen; }
+
+int Restaurant::getCooksVIP() { return CooksVIP; }
+
+void Restaurant::setCooksNormal(int x) { CooksNormal = x; }
+
+void Restaurant::setCooksVigen(int x) { CooksVigen = x; }
+
+void Restaurant::setCooksVIP(int x) { CooksVIP = x; }

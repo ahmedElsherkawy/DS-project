@@ -10,6 +10,12 @@ void CancellationEvent::Execute(Restaurant* pRest) {
 	pRest->Cancellation(this->OrderID);
 }
 
+///done by moataz
+char  CancellationEvent::getType()
+{
+	return 'C';
+}
+
 CancellationEvent::~CancellationEvent()
 {
 }

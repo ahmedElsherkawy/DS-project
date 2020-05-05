@@ -1,7 +1,0 @@
-﻿  Restaurant.cpp
-D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(76,3): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
-D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(372,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(427,3): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
-D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(86): warning C4700: uninitialized local variable 'ON' used
-D:\universty\DS-project\DS-project\Restaurant\Rest\Restaurant.cpp(95): warning C4700: uninitialized local variable 'OV' used
-  Restaurant.vcxproj -> D:\universty\DS-project\DS-project\Debug\Restaurant.exe

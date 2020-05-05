@@ -123,6 +123,8 @@ public:
 
 	PROG_MODE getGUIMode() const;			//returns the mode of the program
 
+	void printInfo(string s1,string s2, string s3, string s4, string s5,string s6,string s7 ,string s8, string s9) const;
+
 };
 
 #endif

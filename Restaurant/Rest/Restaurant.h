@@ -35,9 +35,13 @@ private:
 	Queue<Order*> DEMO_Queue;	//Important: This is just for demo
 	/// ==>
 
-
-
-
+	int NumberofCooks; ///done by moataz
+	int NumberofWaitingNormal;
+	int NumberofWaitingVigen;
+	int NumberofWaitingVIP;
+	int CooksNormal;
+	int CooksVigen;
+	int CooksVIP;
 	//
 	// TODO: Add More Data Members As Needed
 	//
@@ -65,16 +69,33 @@ public:
 	void Addtowaitingvegan(Order *pOrd);
 	void Addtowaitingnormal(Order *pOrd);
 	void Addtowaitingvip(Order *pOrd);
+	void AddtoServiceList(Order* pOrd);
+	
+	void AddtofinishedOrders(Order* pOrd);
 	Order* Removefromwaitingnormal(int ordId);
 
 	/// ===================    DEMO-related functions. Should be removed in phases 1&2   ================= 
 
-	void Just_A_Demo();	//just to show a demo and should be removed in phase1 1 & 2
+	//void Just_A_Demo();	//just to show a demo and should be removed in phase1 1 & 2
 	void AddtoDemoQueue(Order* po);	//adds an order to the demo queue
 
 /// ================================================================================================== 
-
-
+//// all of below done by moataz
+	
+	int getNumberofCooks();
+	void setNumberofCooks(int x);
+	int getNumberWaitingNormal();
+	int getNumberWaitingVigen();
+	int getNumberWaitingVIP();
+	void setNumberWaitingNormal(int x);
+	void setNumberWaitingVigen(int x);
+	void setNumberWaitingVIP(int x);
+	void setCooksNormal(int x);
+	void setCooksVigen(int x);
+	void setCooksVIP(int x);
+	int getCooksNormal();
+	int getCooksVigen();
+	int getCooksVIP();
 
 };
 

@@ -13,7 +13,13 @@ void PromotionEvent::Execute(Restaurant* pRest) {
 	///done by caroline
 	Order* ord;
 	Order* pOrd=pRest->Removefromwaitingnormal(this->OrderID);
-pRest->Addtowaitingvip(pOrd);
+    pRest->Addtowaitingvip(pOrd);
+}
+
+///done by moataz
+char PromotionEvent::getType()
+{
+	return 'P';
 }
 
 PromotionEvent::~PromotionEvent()

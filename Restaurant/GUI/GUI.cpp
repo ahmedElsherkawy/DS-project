@@ -277,11 +277,25 @@ PROG_MODE	GUI::getGUIMode() const
 	PROG_MODE Mode;
 	do
 	{
-		PrintMessage("Please select GUI mode: (1)Interactive, (2)StepByStep, (3)Silent, (4)DEMO... ");
+		PrintMessage("Please select GUI mode: (1)Interactive, (2)StepByStep, (3)Silent");
 		string S = GetString();
 		Mode = (PROG_MODE) (atoi(S.c_str())-1);
 	}
 	while(Mode< 0 || Mode >= MODE_CNT);
 	
 	return Mode;
+}
+
+
+
+void GUI::printInfo(string s1,string s2,string s3,string s4, string s5, string s6, string s7,string s8, string s9) const	//Prints a message on status bar
+{
+	ClearStatusBar();	//First clear the status bar
+
+	pWind->SetPen(DARKRED);
+	pWind->SetFont(18, BOLD, BY_NAME, "Arial");
+	int x = WindHeight - (int)(StatusBarHeight / 1.5);
+	pWind->DrawString(10, WindHeight - (int)(StatusBarHeight / 1.2),"Time Step="+s1); // You may need to change these coordinates later    // to be able to write multi-line
+	pWind->DrawString(10, WindHeight - (int)(StatusBarHeight / 1.5), "Number of avilable cooks:- Normal= " + s2 + " ,Vigen= " + s3 + " ,VIP= "+ s4 + " ,Total= " + s8);
+	pWind->DrawString(10, WindHeight - (int)(StatusBarHeight / 2), "Number of Waiting Orders:- Normal= " + s5 + " ,Vigen= " + s6 + " ,VIP= " + s7+ " ,Total= " + s9);
 }

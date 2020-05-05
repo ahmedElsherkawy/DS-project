@@ -7,6 +7,7 @@ class PromotionEvent :
 public:
 	PromotionEvent(int eTime, int oID,double m);
 	void Execute(Restaurant* pRest);
+	char getType(); ///done by moataz
 	virtual ~PromotionEvent();
 };
 

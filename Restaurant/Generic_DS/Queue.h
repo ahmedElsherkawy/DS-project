@@ -83,13 +83,13 @@ Sees whether this queue is empty.
 
 Input: None.
 Output: True if the queue is empty; otherwise false.
-*/
+*/ 
 template <typename T>
 bool Queue<T>::isEmpty() const
 {
 	if(frontPtr==nullptr)
 		return true;
-	else
+	else 
 		return false;
 }
 
