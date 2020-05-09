@@ -3,6 +3,8 @@
 
 Cook::Cook()
 {
+	numderOfOrders = 0;
+	isbreak = false;
 }
 
 
@@ -10,12 +12,16 @@ Cook::~Cook()
 {
 }
 
-Cook::Cook(int id, COOK_TYPE t, int s,int c, int b) {
+Cook::Cook(int id, COOK_TYPE type, int spee,int capa, int b,int rest) {
 	ID = id;
-	cookType = t;
-	speed = s;
-	capacity = c;
+	cookType = type;
+	speed = spee;
+	capacity = capa;
 	breaktime = b;
+	numderOfOrders = 0;
+	isbreak = false;
+	injured = false;
+	Rst_Prd = rest;
 }
 
 
@@ -48,8 +54,10 @@ COOK_TYPE Cook::getCookType() {
 	return cookType;
 }
 
-void Cook::setFinishService(int Ts, Order * ord) {
-	finishService = Ts;// still not finished i am waiting for class order to be ready  
+void Cook::setFinishService( Order * ord) {
+	finishService = ord->GetFinishTime();// still not finished i am waiting for class order to be ready  
+	// it is ready
+
 }
 int Cook::getFinishService() {
 	return finishService;
@@ -60,7 +68,21 @@ void Cook::setFinishBreak(int Ts) {
 int Cook::getFinishBreak() {
 	return finishBreak;
 }
-
+//phase 2 ola
+void Cook::setNumberOfOrders() {
+	numderOfOrders++;
+	if (numderOfOrders == capacity) {
+		numderOfOrders = 0;
+		isbreak = true;
+	}
+}
+bool Cook::isBreak() {
+	if (isbreak) {
+		isbreak = false;
+		return true;
+	}
+	return isbreak;
+}
 
 
 ///done by caroline

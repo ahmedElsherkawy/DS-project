@@ -1,4 +1,5 @@
 #include "Order.h"
+#include<cmath>
 
 Order::Order(int id, ORD_TYPE r_Type)
 {
@@ -54,7 +55,7 @@ int Order:: GetArrivalTime() const
 }
 void Order:: SetServiceTime(Cook* co)
 {
-	ServTime=size/(co->GetSpeed());
+	ServTime=ceil(size/(co->GetSpeed()));
 }
 int Order:: GetServiceTime() const
 {
@@ -62,8 +63,8 @@ int Order:: GetServiceTime() const
 }
 void Order::SetFinishTime( )
 {
-	FinishTime = 4;
-	//FinishTime=ArrTime+ WaitingTime +ServTime;
+	//FinishTime = 4;
+	FinishTime=ArrTime+ WaitingTime +ServTime;
 }
 int Order:: GetFinishTime() const
 {

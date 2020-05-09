@@ -42,6 +42,11 @@ private:
 	int CooksNormal;
 	int CooksVigen;
 	int CooksVIP;
+
+	///added by ola
+	int auto_pro;
+	int VIP_WT;
+	int Inj_Prop; // The probability a busy cook gets injured
 	//
 	// TODO: Add More Data Members As Needed
 	//
@@ -77,7 +82,7 @@ public:
 	/// ===================    DEMO-related functions. Should be removed in phases 1&2   ================= 
 
 	//void Just_A_Demo();	//just to show a demo and should be removed in phase1 1 & 2
-	void AddtoDemoQueue(Order* po);	//adds an order to the demo queue
+	//void AddtoDemoQueue(Order* po);	//adds an order to the demo queue
 
 /// ================================================================================================== 
 //// all of below done by moataz
@@ -96,6 +101,26 @@ public:
 	int getCooksNormal();
 	int getCooksVigen();
 	int getCooksVIP();
+
+
+	///==============================================================
+	///added by moataz for simulation
+
+	
+	void AssignVIP(int t);
+	void AssignVigen(int t);
+	void AssignNormal(int t);
+
+	//void MoveToService(int t);// we can remove this
+
+	void MoveToFinished(int t);
+	void PromoteNormal(int t);
+
+	///=========================================================================
+	//modes done by moataz
+	void InterActiveMode();
+	void StepByStepMode();
+	void SilentMode();
 
 };
 

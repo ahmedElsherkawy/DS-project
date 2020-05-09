@@ -22,11 +22,14 @@ void Restaurant::RunSimulation()
 	switch (mode)	//Add a function for each mode in next phases
 	{
 	case MODE_INTR:
-		SimulationFunc_INTR();
+		//SimulationFunc_INTR();
+		InterActiveMode();
 		break; //mode to use
 	case MODE_STEP:
+		StepByStepMode();
 		break;
 	case MODE_SLNT:
+		SilentMode();
 		break;
 
 	};
@@ -60,7 +63,7 @@ Restaurant::~Restaurant()
 		delete pGUI;
 }
 void Restaurant::SimulationFunc_INTR() {
-	pGUI->PrintMessage("Write Input File Name:");
+	/*pGUI->PrintMessage("Write Input File Name:");
 	string fileName = pGUI->GetString();
 	//get file name
 	LoadingFunc(fileName);
@@ -81,17 +84,14 @@ void Restaurant::SimulationFunc_INTR() {
 		while (E->getEventTime() == timeStep)
 		{
 			EventsQueue.dequeue(E);
-			if (E->getType() != 'P')
-			{
 				E->Execute(this);
-			}
 			//EventsQueue.dequeue(E);	//remove event from the queue
 			delete E;		//deallocate event object from memory
 			EventsQueue.peekFront(E);
 		}
 
 
-		if (WaitingNormal.isempty()==false)
+		/*if (WaitingNormal.isempty()==false)
 		{
 			Order* ON=nullptr;
 			WaitingNormal.pop(ON);
@@ -126,7 +126,7 @@ void Restaurant::SimulationFunc_INTR() {
 			EventsQueue.peekFront(E);
 		}*/
 
-		if(timeStep % 5 == 0)
+		/*if(timeStep % 5 == 0)
 		{
 			for (int i = 0; i < 3; i++)
 			{
@@ -137,8 +137,15 @@ void Restaurant::SimulationFunc_INTR() {
 					AddtofinishedOrders(OF);
 				}
 			}
-		}
+		}*/
+		/*AssignNormal(timeStep);
+		AssignVIP(timeStep);
+		AssignVigen(timeStep);
 
+		MoveToService(timeStep);
+
+		MoveToFinished(timeStep);
+		PromoteNormal(timeStep);
 
 
 
@@ -179,7 +186,7 @@ void Restaurant::SimulationFunc_INTR() {
 			pGUI->AddToDrawingList(pOrd);
 		}*/
 
-		timeStep++;
+		/*timeStep++;
 		//pGUI->waitForClick();
 		pGUI->ResetDrawingList();
 		pGUI->waitForClick();
@@ -188,7 +195,7 @@ void Restaurant::SimulationFunc_INTR() {
 
 
 
-	}
+	}*/
 
 	//logic
 	//call filldrawinglist
@@ -358,23 +365,27 @@ void Restaurant::addToEventQueue(Event* E) {
 void Restaurant::LoadingFunc(string address) {
 	fstream input_file;
 	input_file.open(address);
-	int cookN, cookG, cookV, sn, sg, sv, BO, BN, BG, BV, pro;
-	input_file >> cookN >> cookG >> cookV >> sn >> sg >> sv >> BO >> BN >> BG >> BV >> pro;
+	int cookN, cookG, cookV, sn_min, sn_max, sg_min, sg_max, sv_min, sv_max, BO
+		, BN_min, BN_max, BG_min,BG_max ,BV_min ,BV_max, InjProp, RstPrd, pro,VIP_wt;
+	input_file >> cookN >> cookG >> cookV >> sn_min >> sn_max >> sg_min >> sg_max >> sv_min >> sv_max>> BO
+		>> BN_min>> BN_max>> BG_min>> BG_max>> BV_min >>BV_max >> InjProp>> RstPrd>> pro>>VIP_wt;
 	//cout << cookN << cookG << cookV << sn << sg << sv << BO << BN << BG << BV;
 	Cook* NC;
-
+	auto_pro = pro;
+	VIP_WT = VIP_wt;
+	Inj_Prop = InjProp;
 	for (int i = 1; i < 1+cookN; i++) {
-		NC = new Cook(i, TYPE_NRM_COOK, sn, BO, BN);
+		NC = new Cook(i, TYPE_NRM_COOK, rand() % (sn_max - sn_min + 1) + sn_min, BO, rand() % (BN_max - BN_min + 1) + BN_min, RstPrd);
 		freeNormalCooks.enqueue(NC);
 	}
 
 	for (int i = cookN+1; i < 1+cookN + cookG; i++) {
-		NC = new Cook(i, TYPE_VGAN_COOK, sg, BO, BG);
+		NC = new Cook(i, TYPE_VGAN_COOK, rand() % (sg_max - sg_min + 1) + sg_min, BO, rand() % (BG_max - BG_min + 1) + BG_min,  RstPrd);
 		freeVegancooks.enqueue(NC);
 	}
 
 	for (int i = cookG + cookN+1; i < 1+cookN + cookG + cookV; i++) {
-		NC = new Cook(i, TYPE_VIP_COOK, sv, BO, BV);
+		NC = new Cook(i, TYPE_VIP_COOK, rand() % (sv_max - sv_min + 1) + sv_min, BO, rand() % (BV_max - BV_min + 1) + BV_min,  RstPrd);
 		freeVIPCooks.enqueue(NC);
 	}
 
@@ -575,3 +586,366 @@ void Restaurant::setCooksNormal(int x) { CooksNormal = x; }
 void Restaurant::setCooksVigen(int x) { CooksVigen = x; }
 
 void Restaurant::setCooksVIP(int x) { CooksVIP = x; }
+
+
+///==============================================================
+	///added by moataz for simulation
+//TYPE_NRM,	//normal order
+//TYPE_VGAN,	//vegan
+//TYPE_VIP
+
+void Restaurant::AssignVIP(int t)
+{
+	Order * ordToAssign;
+	Cook* cookToAssign;
+	while (!WaitingVIP.isempty()) {
+        //WaitingVIP.peek(ordToAssign);
+		if (!freeVIPCooks.isEmpty()) {
+			WaitingVIP.pop(ordToAssign);
+			freeVIPCooks.dequeue(cookToAssign);
+			//set waiting time
+			ordToAssign->SetWaitingTime(t);
+			//set service time
+			ordToAssign->SetServiceTime(cookToAssign);
+			//set finish time
+			ordToAssign->SetFinishTime();
+			inServiceOrders.InsertSorted(ordToAssign, 3);//sort by finish time
+			//set finish cooking(service) time
+			cookToAssign->setFinishService(ordToAssign);
+			// increase number of orders
+			cookToAssign->setNumberOfOrders();
+			//set the type of the order
+			cookToAssign->setType(TYPE_VIP);
+			busyCooks.InsertSorted(cookToAssign, 1);// sort by cooking(serving) time
+	
+		}
+		else if (!freeNormalCooks.isEmpty()) {
+			WaitingVIP.pop(ordToAssign);
+			freeNormalCooks.dequeue(cookToAssign);
+			//set waiting time
+			ordToAssign->SetWaitingTime(t);
+			//set service time
+			ordToAssign->SetServiceTime(cookToAssign);
+			//set finish time
+			ordToAssign->SetFinishTime();
+			inServiceOrders.InsertSorted(ordToAssign, 3);//sort by finish time
+			//set finish cooking(service) time
+			cookToAssign->setFinishService(ordToAssign);
+			// increase number of orders
+			cookToAssign->setNumberOfOrders();
+			//set the type of the order
+			cookToAssign->setType(TYPE_VIP);
+			busyCooks.InsertSorted(cookToAssign, 1);// sort by cooking(serving) time
+		}else if(!freeVegancooks.isEmpty()){
+			WaitingVIP.pop(ordToAssign);
+			freeVegancooks.dequeue(cookToAssign);
+			//set waiting time
+			ordToAssign->SetWaitingTime(t);
+			//set service time
+			ordToAssign->SetServiceTime(cookToAssign);
+			//set finish time
+			ordToAssign->SetFinishTime();
+			inServiceOrders.InsertSorted(ordToAssign, 3);//sort by finish time
+			//set finish cooking(service) time
+			cookToAssign->setFinishService(ordToAssign);
+			// increase number of orders
+			cookToAssign->setNumberOfOrders();
+			//set the type of the order
+			cookToAssign->setType(TYPE_VIP);
+			busyCooks.InsertSorted(cookToAssign, 1);// sort by cooking(serving) time
+		}
+	}
+
+}
+void Restaurant::AssignVigen(int t)
+{
+	Order * ordToAssign;
+	Cook* cookToAssign;
+	while (!WaitingVegan.isEmpty()) {
+
+		if (!freeVegancooks.isEmpty()) {
+			WaitingVegan.dequeue(ordToAssign);
+			freeVegancooks.dequeue(cookToAssign);
+			//set waiting time
+			ordToAssign->SetWaitingTime(t);
+			//set service time
+			ordToAssign->SetServiceTime(cookToAssign);
+			//set finish time
+			ordToAssign->SetFinishTime();
+			inServiceOrders.InsertSorted(ordToAssign, 3);//sort by finish time
+			//set finish cooking(service) time
+			cookToAssign->setFinishService(ordToAssign);
+			// increase number of orders
+			cookToAssign->setNumberOfOrders();
+			//set the type of the order
+			cookToAssign->setType(TYPE_VGAN);
+			busyCooks.InsertSorted(cookToAssign, 1);// sort by cooking(serving) time
+
+		}
+	}
+}
+void Restaurant::AssignNormal(int t)
+{
+	Order * ordToAssign;
+	Cook* cookToAssign;
+	while (!WaitingNormal.isempty()) {
+
+		if (!freeNormalCooks.isEmpty()) {
+			WaitingNormal.pop(ordToAssign);
+			freeNormalCooks.dequeue(cookToAssign);
+			//set waiting time
+			ordToAssign->SetWaitingTime(t);
+			//set service time
+			ordToAssign->SetServiceTime(cookToAssign);
+			//set finish time
+			ordToAssign->SetFinishTime();
+			inServiceOrders.InsertSorted(ordToAssign, 3);//sort by finish time
+			//set finish cooking(service) time
+			cookToAssign->setFinishService(ordToAssign);
+			// increase number of orders
+			cookToAssign->setNumberOfOrders();
+			//set the type of the order
+			cookToAssign->setType(TYPE_NRM);
+			busyCooks.InsertSorted(cookToAssign, 1);// sort by cooking(serving) time
+
+		}else if (!freeVIPCooks.isEmpty()) {
+			WaitingNormal.pop(ordToAssign);
+			freeVIPCooks.dequeue(cookToAssign);
+			//set waiting time
+			ordToAssign->SetWaitingTime(t);
+			//set service time
+			ordToAssign->SetServiceTime(cookToAssign);
+			//set finish time
+			ordToAssign->SetFinishTime();
+			inServiceOrders.InsertSorted(ordToAssign, 3);//sort by finish time
+			//set finish cooking(service) time
+			cookToAssign->setFinishService(ordToAssign);
+			// increase number of orders
+			cookToAssign->setNumberOfOrders();
+			//set the type of the order
+			cookToAssign->setType(TYPE_NRM);
+			busyCooks.InsertSorted(cookToAssign, 1);// sort by cooking(serving) time
+
+		}
+	}
+}
+
+//void Restaurant::MoveToService(int t)
+//{
+//
+//}
+
+void Restaurant::MoveToFinished(int t)
+{
+
+}
+void Restaurant::PromoteNormal(int t)
+{
+
+}
+
+
+///=========================================================================
+//modes done by moataz
+void Restaurant::InterActiveMode()
+{
+	pGUI->PrintMessage("Write Input File Name:");
+	string fileName = pGUI->GetString();
+	LoadingFunc(fileName);
+	int timeStep = 1;
+	while (!EventsQueue.isEmpty() || inServiceOrders.isempty() == false)
+	{
+
+
+
+		Event* E;
+		EventsQueue.peekFront(E);
+		while (E->getEventTime() == timeStep)
+		{
+			EventsQueue.dequeue(E);
+			E->Execute(this);
+			delete E;		
+			EventsQueue.peekFront(E);
+		}
+
+
+		
+		AssignVIP(timeStep);
+		AssignVigen(timeStep);
+		AssignNormal(timeStep);
+
+		//MoveToService(timeStep);
+
+		MoveToFinished(timeStep);
+		PromoteNormal(timeStep);
+
+
+
+
+		FillDrawingList();
+		pGUI->UpdateInterface();
+
+		char ts[10];
+		itoa(timeStep, ts, 10);
+		char CN[10];
+		itoa(getCooksNormal(), CN, 10);
+		char CG[10];
+		itoa(getCooksVigen(), CG, 10);
+		char CV[10];
+		itoa(getCooksVIP(), CV, 10);
+		char WN[10];
+		itoa(getNumberWaitingNormal(), WN, 10);
+		char WG[10];
+		itoa(getNumberWaitingVigen(), WG, 10);
+		char WV[10];
+		itoa(getNumberWaitingVIP(), WV, 10);
+		char OC[10];
+		itoa(getNumberofCooks(), OC, 10);
+		char OT[10];
+		itoa(getNumberWaitingVIP() + getNumberWaitingVigen() + getNumberWaitingNormal(), OT, 10);
+		pGUI->printInfo(ts, CN, CG, CV, WN, WG, WV, OC, OT);
+
+		timeStep++;
+		
+		pGUI->ResetDrawingList();
+		pGUI->waitForClick();
+
+
+
+
+
+	}
+}
+void Restaurant::StepByStepMode()
+{
+	pGUI->PrintMessage("Write Input File Name:");
+	string fileName = pGUI->GetString();
+	LoadingFunc(fileName);
+	int timeStep = 1;
+	while (!EventsQueue.isEmpty() || inServiceOrders.isempty() == false)
+	{
+
+
+
+		Event* E;
+		EventsQueue.peekFront(E);
+		while (E->getEventTime() == timeStep)
+		{
+			EventsQueue.dequeue(E);
+			E->Execute(this);
+			delete E;
+			EventsQueue.peekFront(E);
+		}
+
+
+		
+		AssignVIP(timeStep);
+		AssignVigen(timeStep);
+		AssignNormal(timeStep);
+
+		//MoveToService(timeStep);
+
+		MoveToFinished(timeStep);
+		PromoteNormal(timeStep);
+
+
+
+
+		FillDrawingList();
+		pGUI->UpdateInterface();
+
+		char ts[10];
+		itoa(timeStep, ts, 10);
+		char CN[10];
+		itoa(getCooksNormal(), CN, 10);
+		char CG[10];
+		itoa(getCooksVigen(), CG, 10);
+		char CV[10];
+		itoa(getCooksVIP(), CV, 10);
+		char WN[10];
+		itoa(getNumberWaitingNormal(), WN, 10);
+		char WG[10];
+		itoa(getNumberWaitingVigen(), WG, 10);
+		char WV[10];
+		itoa(getNumberWaitingVIP(), WV, 10);
+		char OC[10];
+		itoa(getNumberofCooks(), OC, 10);
+		char OT[10];
+		itoa(getNumberWaitingVIP() + getNumberWaitingVigen() + getNumberWaitingNormal(), OT, 10);
+		pGUI->printInfo(ts, CN, CG, CV, WN, WG, WV, OC, OT);
+		
+		
+		Sleep(1000);
+		timeStep++;
+
+		pGUI->ResetDrawingList();
+		//pGUI->waitForClick();
+
+
+
+
+	}
+}
+void Restaurant::SilentMode() 
+{
+	pGUI->PrintMessage("Write Input File Name:");
+	string fileName = pGUI->GetString();
+	LoadingFunc(fileName);
+	int timeStep = 1;
+	while (!EventsQueue.isEmpty() || inServiceOrders.isempty() == false)
+	{
+
+
+
+		Event* E;
+		EventsQueue.peekFront(E);
+		while (E->getEventTime() == timeStep)
+		{
+			EventsQueue.dequeue(E);
+			E->Execute(this);
+			delete E;
+			EventsQueue.peekFront(E);
+		}
+
+
+		
+		AssignVIP(timeStep);
+		AssignVigen(timeStep);
+        AssignNormal(timeStep);
+		//MoveToService(timeStep);
+
+		MoveToFinished(timeStep);
+		PromoteNormal(timeStep);
+
+
+
+
+		/*FillDrawingList();
+		pGUI->UpdateInterface();
+
+		char ts[10];
+		itoa(timeStep, ts, 10);
+		char CN[10];
+		itoa(getCooksNormal(), CN, 10);
+		char CG[10];
+		itoa(getCooksVigen(), CG, 10);
+		char CV[10];
+		itoa(getCooksVIP(), CV, 10);
+		char WN[10];
+		itoa(getNumberWaitingNormal(), WN, 10);
+		char WG[10];
+		itoa(getNumberWaitingVigen(), WG, 10);
+		char WV[10];
+		itoa(getNumberWaitingVIP(), WV, 10);
+		char OC[10];
+		itoa(getNumberofCooks(), OC, 10);
+		char OT[10];
+		itoa(getNumberWaitingVIP() + getNumberWaitingVigen() + getNumberWaitingNormal(), OT, 10);
+		pGUI->printInfo(ts, CN, CG, CV, WN, WG, WV, OC, OT);
+
+		timeStep++;
+
+		pGUI->ResetDrawingList();*/
+		timeStep++;
+	}
+}
