@@ -327,7 +327,31 @@ public:
 		}
 
 	}
+bool pop(Cook*& frntEntry)
+	{
+		if (!Head)return false;
 
+
+		Node<Cook*>* nodeToDeletePtr = Head;
+		frntEntry = Head->getItem();
+		Head = Head->getNext();
+		//Free memory reserved by the dequeued node
+		delete nodeToDeletePtr;
+
+
+		return true;
+
+	}
+
+	bool peek(Cook*& frntEntry) const
+	{
+		if (!Head)
+			return false;
+
+		frntEntry = Head->getItem();
+		return true;
+
+	}
 };
 template<>
 class SortedList<Order *>
