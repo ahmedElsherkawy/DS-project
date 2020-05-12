@@ -331,7 +331,11 @@ public:
 		}
 
 	}
+<<<<<<< HEAD
 	bool pop(Cook*& frntEntry)
+=======
+bool pop(Cook*& frntEntry)
+>>>>>>> 12af53d728fb03f4aeb667ed01fb5f194b8802ae
 	{
 		if (!Head)return false;
 
@@ -339,11 +343,16 @@ public:
 		Node<Cook*>* nodeToDeletePtr = Head;
 		frntEntry = Head->getItem();
 		Head = Head->getNext();
+<<<<<<< HEAD
 		// Free memory reserved by the dequeued node
+=======
+		//Free memory reserved by the dequeued node
+>>>>>>> 12af53d728fb03f4aeb667ed01fb5f194b8802ae
 		delete nodeToDeletePtr;
 
 
 		return true;
+<<<<<<< HEAD
 
 	}
 	bool peek(Cook*& frntEntry) const
@@ -355,7 +364,20 @@ public:
 		return true;
 
 	}
+=======
+>>>>>>> 12af53d728fb03f4aeb667ed01fb5f194b8802ae
 
+	}
+
+	bool peek(Cook*& frntEntry) const
+	{
+		if (!Head)
+			return false;
+
+		frntEntry = Head->getItem();
+		return true;
+
+	}
 };
 template<>
 class SortedList<Order *>

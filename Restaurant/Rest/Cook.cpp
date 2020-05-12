@@ -74,6 +74,7 @@ void Cook::setNumberOfOrders() {
 	if (numderOfOrders == capacity) {
 		numderOfOrders = 0;
 		isbreak = true;
+
 	}
 }
 bool Cook::isBreak() {

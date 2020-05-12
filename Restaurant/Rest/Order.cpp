@@ -88,7 +88,7 @@ int Order:: Getsize() const
 }
 void Order::SetPriority()
 {
-	Priority=ArrTime+size+totalMoney;
+	Priority=(size*totalMoney)/ArrTime;
 }
 
 int Order::GetPriority() const

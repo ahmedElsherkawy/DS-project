@@ -17,7 +17,7 @@ char ArrivalEvent::getType()
 {
 	return 'A';
 }
-
+//done by caroline
 void ArrivalEvent::Execute(Restaurant* pRest)
 {
 	//This function should create an order and fills its data 

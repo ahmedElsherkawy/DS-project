@@ -733,12 +733,46 @@ void Restaurant::AssignNormal(int t)
 
 //void Restaurant::MoveToService(int t)
 //{
-//
 //}
 
+//phase 2 Caroline
 void Restaurant::MoveToFinished(int t)
 {
-
+	Order * finishedord;
+	Cook * finishedcook;
+	busyCooks.peek(finishedcook);
+	while (finishedcook->getFinishService()==t)
+	{
+		inServiceOrders.pop(finishedord);
+		finishedOrders.enqueue(finishedord);
+		busyCooks.pop(finishedcook);
+		if(!finishedcook->isBreak())
+		{
+			if (finishedcook->getCookType()==TYPE_NRM_COOK)
+				freeNormalCooks.enqueue(finishedcook);
+			else if(finishedcook->getCookType()==TYPE_VGAN_COOK)
+				freeVegancooks.enqueue(finishedcook);
+			else
+				freeVIPCooks.enqueue(finishedcook);
+		}
+		else
+		{
+			finishedcook->setFinishBreak(t);
+			inBreakCooks.InsertSorted(finishedcook,2);
+		}
+	}
+	Cook * finbreakcook;
+	inBreakCooks.peek(finbreakcook);
+	while (finbreakcook->getFinishBreak()==t)
+	{
+		inBreakCooks.pop(finbreakcook);
+		if (finbreakcook->getCookType()==TYPE_NRM_COOK)
+				freeNormalCooks.enqueue(finbreakcook);
+			else if(finbreakcook->getCookType()==TYPE_VGAN_COOK)
+				freeVegancooks.enqueue(finbreakcook);
+			else
+				freeVIPCooks.enqueue(finbreakcook);
+	}
 }
 void Restaurant::PromoteNormal(int t)
 {
