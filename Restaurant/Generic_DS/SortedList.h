@@ -239,6 +239,10 @@ class SortedList<Cook *>
 {
 	Node<Cook *> *Head;
 public:
+	SortedList()
+	{
+		Head = nullptr;
+	}
 
 	Cook** toArray(int& count)
 	{
@@ -325,6 +329,30 @@ public:
 			p->setNext(nptr);
 
 		}
+
+	}
+	bool pop(Cook*& frntEntry)
+	{
+		if (!Head)return false;
+
+
+		Node<Cook*>* nodeToDeletePtr = Head;
+		frntEntry = Head->getItem();
+		Head = Head->getNext();
+		// Free memory reserved by the dequeued node
+		delete nodeToDeletePtr;
+
+
+		return true;
+
+	}
+	bool peek(Cook*& frntEntry) const
+	{
+		if (!Head)
+			return false;
+
+		frntEntry = Head->getItem();
+		return true;
 
 	}
 
@@ -418,6 +446,7 @@ public:
 				p = p->getNext();
 			}
 		}
+		ord = nullptr;
 	}
 
 	void InsertSorted(Order* ordp, int key) {
@@ -480,7 +509,7 @@ public:
 			}
 		}
 
-		if (key == 2)
+		if (key == 2) //by arrival Time
 		{
 			Node<Order*> *P = Head;
 			Node<Order*> *R = P->getNext();
@@ -532,7 +561,7 @@ public:
 
 		}
 
-		if (key == 3)
+		if (key == 3)// by finish time
 		{
 			Node<Order*>* P = Head;
 			Node<Order*>* R = P->getNext();

@@ -27,6 +27,9 @@ private:
 	SortedList<Order*> WaitingVIP;
 	SortedList <Order*> inServiceOrders;
 
+
+
+	SortedList<Cook* > injCooks; ///add by moataz
 	//lists of VIP orders ,normal orders,inservive orders,busy cooks and in bresk cooks
 
 
@@ -46,7 +49,7 @@ private:
 	///added by ola
 	int auto_pro;
 	int VIP_WT;
-	int Inj_Prop; // The probability a busy cook gets injured
+	double Inj_Prop; // The probability a busy cook gets injured
 	//
 	// TODO: Add More Data Members As Needed
 	//
@@ -115,6 +118,9 @@ public:
 
 	void MoveToFinished(int t);
 	void PromoteNormal(int t);
+
+	void checkUrgent(int t);
+	void assigntUrgent(Order* ordToAssign, int t);
 
 	///=========================================================================
 	//modes done by moataz

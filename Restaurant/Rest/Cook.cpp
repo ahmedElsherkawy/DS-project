@@ -84,7 +84,6 @@ bool Cook::isBreak() {
 	return isbreak;
 }
 
-
 ///done by caroline
 void Cook::setSpeed(int s)
 {

@@ -366,7 +366,8 @@ void Restaurant::LoadingFunc(string address) {
 	fstream input_file;
 	input_file.open(address);
 	int cookN, cookG, cookV, sn_min, sn_max, sg_min, sg_max, sv_min, sv_max, BO
-		, BN_min, BN_max, BG_min,BG_max ,BV_min ,BV_max, InjProp, RstPrd, pro,VIP_wt;
+		, BN_min, BN_max, BG_min,BG_max ,BV_min ,BV_max,  RstPrd, pro,VIP_wt;
+	double InjProp;
 	input_file >> cookN >> cookG >> cookV >> sn_min >> sn_max >> sg_min >> sg_max >> sv_min >> sv_max>> BO
 		>> BN_min>> BN_max>> BG_min>> BG_max>> BV_min >>BV_max >> InjProp>> RstPrd>> pro>>VIP_wt;
 	//cout << cookN << cookG << cookV << sn << sg << sv << BO << BN << BG << BV;
@@ -743,7 +744,121 @@ void Restaurant::PromoteNormal(int t)
 {
 
 }
+////done by moataz
+void Restaurant::checkUrgent(int t)
+{
+	Order* ordToAssign;
+	if (!WaitingVIP.isempty())
+	{
+		int waitingVIPSize = 0;
+		Order** Waiting_VIP_Orders = WaitingVIP.toArray(waitingVIPSize);
+		for (int i = 0; i < waitingVIPSize; i++)
+		{
+			if (t - Waiting_VIP_Orders[i]->GetArrivalTime() >= VIP_WT)
+			{
+				assigntUrgent(Waiting_VIP_Orders[i], t);
+			}
+		}
+	}
+}
 
+//done by moataz 
+////
+void Restaurant::assigntUrgent(Order* ordToAssign, int t)
+{
+	Cook* cookToAssign;
+		//WaitingVIP.peek(ordToAssign);
+		if (!freeVIPCooks.isEmpty()) {
+			//WaitingVIP.pop(O);
+			freeVIPCooks.dequeue(cookToAssign);
+			//set waiting time
+			ordToAssign->SetWaitingTime(t);
+			//set service time
+			ordToAssign->SetServiceTime(cookToAssign);
+			//set finish time
+			ordToAssign->SetFinishTime();
+			inServiceOrders.InsertSorted(ordToAssign, 3);//sort by finish time
+			//set finish cooking(service) time
+			cookToAssign->setFinishService(ordToAssign);
+			// increase number of orders
+			cookToAssign->setNumberOfOrders();
+			//set the type of the order
+			cookToAssign->setType(TYPE_VIP);
+			busyCooks.InsertSorted(cookToAssign, 1);// sort by cooking(serving) time
+
+		}
+		else if (!freeNormalCooks.isEmpty()) {
+			freeNormalCooks.dequeue(cookToAssign);
+			//set waiting time
+			ordToAssign->SetWaitingTime(t);
+			//set service time
+			ordToAssign->SetServiceTime(cookToAssign);
+			//set finish time
+			ordToAssign->SetFinishTime();
+			inServiceOrders.InsertSorted(ordToAssign, 3);//sort by finish time
+			//set finish cooking(service) time
+			cookToAssign->setFinishService(ordToAssign);
+			// increase number of orders
+			cookToAssign->setNumberOfOrders();
+			//set the type of the order
+			cookToAssign->setType(TYPE_VIP);
+			busyCooks.InsertSorted(cookToAssign, 1);// sort by cooking(serving) time
+		}
+		else if (!freeVegancooks.isEmpty()) {
+			freeVegancooks.dequeue(cookToAssign);
+			//set waiting time
+			ordToAssign->SetWaitingTime(t);
+			//set service time
+			ordToAssign->SetServiceTime(cookToAssign);
+			//set finish time
+			ordToAssign->SetFinishTime();
+			inServiceOrders.InsertSorted(ordToAssign, 3);//sort by finish time
+			//set finish cooking(service) time
+			cookToAssign->setFinishService(ordToAssign);
+			// increase number of orders
+			cookToAssign->setNumberOfOrders();
+			//set the type of the order
+			cookToAssign->setType(TYPE_VIP);
+			busyCooks.InsertSorted(cookToAssign, 1);// sort by cooking(serving) time
+		}
+		else if (!busyCooks.isempty())
+		{
+			busyCooks.pop(cookToAssign);
+			//set waiting time
+			ordToAssign->SetWaitingTime(t);
+			//set service time
+			ordToAssign->SetServiceTime(cookToAssign);
+			//set finish time
+			ordToAssign->SetFinishTime();
+			inServiceOrders.InsertSorted(ordToAssign, 3);//sort by finish time
+			//set finish cooking(service) time
+			cookToAssign->setFinishService(ordToAssign);
+			// increase number of orders
+			cookToAssign->setNumberOfOrders();
+			//set the type of the order
+			cookToAssign->setType(TYPE_VIP);
+			busyCooks.InsertSorted(cookToAssign, 1);// sort by cooking(serving) time
+		}
+		else if(!injCooks.isempty())
+		{
+			injCooks.pop(cookToAssign);
+			//set waiting time
+			ordToAssign->SetWaitingTime(t);
+			//set service time
+			ordToAssign->SetServiceTime(cookToAssign);
+			//set finish time
+			ordToAssign->SetFinishTime();
+			inServiceOrders.InsertSorted(ordToAssign, 3);//sort by finish time
+			//set finish cooking(service) time
+			cookToAssign->setFinishService(ordToAssign);
+			// increase number of orders
+			cookToAssign->setNumberOfOrders();
+			//set the type of the order
+			cookToAssign->setType(TYPE_VIP);
+			busyCooks.InsertSorted(cookToAssign, 1);// sort by cooking(serving) time
+			/////////////fadl l part bta3 l speed
+		}
+}
 
 ///=========================================================================
 //modes done by moataz

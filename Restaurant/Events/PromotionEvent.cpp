@@ -13,7 +13,9 @@ void PromotionEvent::Execute(Restaurant* pRest) {
 	///done by caroline
 	Order* ord;
 	Order* pOrd=pRest->Removefromwaitingnormal(this->OrderID);
-    pRest->Addtowaitingvip(pOrd);
+	if (pOrd) {
+		pRest->Addtowaitingvip(pOrd);
+	}
 }
 
 ///done by moataz
